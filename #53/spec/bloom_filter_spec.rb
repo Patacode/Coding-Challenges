@@ -10,4 +10,10 @@ RSpec.describe BloomFilter do
       expect(@bloom_filter.size).to eq(480)
     end
   end
+
+  describe '#hash_function_count' do
+    it 'returns the number of hash functions used by the bloom filter' do
+      expect(@bloom_filter.hash_function_count).to eq(4)
+    end
+  end
 end
