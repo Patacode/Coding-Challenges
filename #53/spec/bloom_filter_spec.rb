@@ -46,4 +46,14 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
       )
     end
   end
+
+  describe '#include?', fresh_data: true do
+    it 'returns true if the provided element is most likely in the set' do
+      expect(@bloom_filter.include?('deleniti')).to be(true)
+    end
+
+    it 'returns false if the provided element is most likely not in the set' do
+      expect(@bloom_filter.include?('zebra')).to be(false)
+    end
+  end
 end
