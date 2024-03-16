@@ -79,3 +79,4 @@ build-iPhoneSimulator/
 
 # End of https://www.toptal.com/developers/gitignore/api/ruby,visualstudiocode
 
+.aliases
