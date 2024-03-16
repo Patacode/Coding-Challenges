@@ -16,4 +16,10 @@ RSpec.describe BloomFilter do
       expect(@bloom_filter.hash_function_count).to eq(4)
     end
   end
+
+  describe '#to_i' do
+    it 'returns the bit array value as integer used by the bloom filter' do
+      expect(@bloom_filter.to_i).to eq(0)
+    end
+  end
 end
