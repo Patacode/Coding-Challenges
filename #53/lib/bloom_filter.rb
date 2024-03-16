@@ -8,7 +8,7 @@ class BloomFilter
 
     @size = required_bit_qty(line_qty, epsilon)
     @hash_function_count = optimal_hash_function_qty(@size, line_qty)
-    @bit_array = 0
+    @bit_array = init_bit_array(datasource)
   end
 
   def to_i
@@ -29,5 +29,29 @@ class BloomFilter
 
   def optimal_hash_function_qty(bit_qty, elem_qty)
     (bit_qty / elem_qty.to_f * Math.log(2)).ceil
+  end
+
+  def init_bit_array(filepath)
+    File.open(filepath) do |file|
+      file.each_line.lazy.map do |line|
+        hashes = []
+        offset_basis = nil
+
+        @hash_function_count.times do
+          new_hash = Hasher.fnv1(
+            line.strip,
+            variant: 64,
+            offset_basis: offset_basis
+          )
+
+          offset_basis = new_hash
+          hashes << new_hash % @size
+        end
+
+        hashes
+      end.reduce(0) do |bit_array, hashes|
+        hashes.reduce(bit_array) { |bit_array, hash| bit_array | 2**hash }
+      end
+    end
   end
 end
