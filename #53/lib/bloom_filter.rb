@@ -35,7 +35,7 @@ class BloomFilter
   end
 
   def required_bit_qty(elem_qty, epsilon)
-    -(elem_qty * Math.log(epsilon) / Math.log(2)**2).floor
+    -(elem_qty * Math.log(epsilon) / (Math.log(2)**2)).floor
   end
 
   def optimal_hash_function_qty(bit_qty, elem_qty)
@@ -67,7 +67,7 @@ class BloomFilter
     @hash_function_count.times do
       new_hash = compute_64bit_fnv1(string, offset_basis)
       offset_basis = new_hash
-      hashes << new_hash % @size
+      hashes << (new_hash % @size)
     end
 
     hashes
