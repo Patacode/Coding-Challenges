@@ -16,8 +16,8 @@ class BloomFilter
   end
 
   def add(string)
-    @bit_array = compute_64bit_fnv1_hashes(string.strip)
-      .reduce(@bit_array) { |bit_array, hash| bit_array | compute_index(hash) }
+    compute_64bit_fnv1_hashes(string.strip)
+      .each { |hash| @bit_array |= compute_index(hash) }
   end
 
   def include?(string)
