@@ -2,11 +2,17 @@
 
 require 'bloom_filter'
 
-RSpec.describe BloomFilter do
-  before(:context) do
+RSpec.configure do |config|
+  config.before(:context, target_cls: BloomFilter) do
     @bloom_filter = BloomFilter.new('dict_sample.txt', epsilon: 0.1)
   end
 
+  config.before(:example, fresh_data: true) do
+    @bloom_filter = BloomFilter.new('dict_sample.txt', epsilon: 0.1)
+  end
+end
+
+RSpec.describe BloomFilter, target_cls: BloomFilter do
   describe '#size' do
     it 'returns the number of bits used by the bloom filter' do
       expect(@bloom_filter.size).to eq(480)
@@ -29,7 +35,7 @@ RSpec.describe BloomFilter do
     end
   end
 
-  describe '#add' do
+  describe '#add', fresh_data: true do
     it 'adds the provided element to the bloom filter' do
       @bloom_filter.add('hello')
 
