@@ -10,7 +10,7 @@ class Hasher
       end
 
     string.each_byte.reduce(offset_basis) do |hash, byte|
-      [hash * prime].pack('L').unpack('L')[0] ^ byte
+      [hash * prime].pack('L').unpack1('L') ^ byte
     end
   end
 end
