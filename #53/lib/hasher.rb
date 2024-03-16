@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Hasher
   def self.fnv1(string, variant: 64)
     prime, offset_basis =
