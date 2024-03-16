@@ -17,7 +17,7 @@ class BloomFilter
 
   def add(string)
     @bit_array = compute_64bit_fnv1_hashes(string.strip)
-      .reduce(@bit_array) { |bit_array, hash| bit_array | 2**hash }
+      .reduce(@bit_array) { |bit_array, hash| bit_array | compute_index(hash) }
   end
 
   private
@@ -43,7 +43,9 @@ class BloomFilter
         .lazy
         .map { |line| compute_64bit_fnv1_hashes(line.strip) }
         .reduce(0) do |bit_array, hashes|
-          hashes.reduce(bit_array) { |cbit_array, hash| cbit_array | 2**hash }
+          hashes.reduce(bit_array) do |cbit_array, hash|
+            cbit_array | compute_index(hash)
+          end
         end
     end
   end
@@ -63,5 +65,9 @@ class BloomFilter
     end
 
     hashes
+  end
+
+  def compute_index(hash)
+    2**hash
   end
 end
