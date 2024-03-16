@@ -20,6 +20,12 @@ class BloomFilter
       .reduce(@bit_array) { |bit_array, hash| bit_array | compute_index(hash) }
   end
 
+  def include?(string)
+    compute_64bit_fnv1_hashes(string.strip)
+      .map { |hash| @bit_array & compute_index(hash) }
+      .none?(0)
+  end
+
   private
 
   def filesize(filepath)
