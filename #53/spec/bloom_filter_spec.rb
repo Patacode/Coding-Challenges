@@ -56,4 +56,21 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
       expect(@bloom_filter.include?('zebra')).to be(false)
     end
   end
+
+  describe '#save_to_file' do
+    after(:example) do
+      File.delete('result.bf') if File.exist?('result.bf')
+    end
+
+    it 'saves the internal bit array of bloom filter in a file on disk' do
+      @bloom_filter.save_to_file('result')
+
+      expect(File).to exist('result.bf')
+      expect(File.read('result.bf')).to eq(
+        "h&#\xDA\xAA\x88.:r&\xB6\xBA\xE6\xEE!+6\xA6\x1Cf\tdjv\xB3\xAE:#\xB2" \
+        "\xA3:\xA3fc\xA6c,\xC0\xA6'(\xE2\xBF&\xB3\xAA\xE3\xA66\xE7\xB6&N(\xAA" \
+        "\xF5\xB2rnb"
+      )
+    end
+  end
 end
