@@ -23,6 +23,6 @@ class BloomFilter
   end
 
   def optimal_hash_function_qty(bit_qty, elem_qty)
-    (bit_qty / elem_qty * Math.log(2)).ceil
+    (bit_qty / elem_qty.to_f * Math.log(2)).ceil
   end
 end
