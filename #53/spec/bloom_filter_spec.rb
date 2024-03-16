@@ -28,4 +28,16 @@ RSpec.describe BloomFilter do
       )
     end
   end
+
+  describe '#add' do
+    it 'adds the provided element to the bloom filter' do
+      @bloom_filter.add('hello')
+
+      expect(@bloom_filter.to_i).to eq(
+        '12700271158760067064329340718225424671980043543329009783377009459400' \
+        '87273989570313276819506087179542471113271943694647933253256323172270' \
+        '179774050'.to_i
+      )
+    end
+  end
 end
