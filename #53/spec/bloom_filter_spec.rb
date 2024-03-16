@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bloom_filter'
 
 RSpec.describe BloomFilter do

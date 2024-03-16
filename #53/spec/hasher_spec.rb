@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'hasher'
 
 RSpec.describe Hasher do
