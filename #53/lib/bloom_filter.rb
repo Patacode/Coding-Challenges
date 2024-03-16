@@ -15,6 +15,11 @@ class BloomFilter
     @bit_array
   end
 
+  def add(string)
+    @bit_array = compute_64bit_fnv1_hashes(string.strip)
+      .reduce(@bit_array) { |bit_array, hash| bit_array | 2**hash }
+  end
+
   private
 
   def filesize(filepath)
