@@ -8,6 +8,11 @@ class BloomFilter
 
     @size = required_bit_qty(line_qty, epsilon)
     @hash_function_count = optimal_hash_function_qty(@size, line_qty)
+    @bit_array = 0
+  end
+
+  def to_i
+    @bit_array
   end
 
   private
