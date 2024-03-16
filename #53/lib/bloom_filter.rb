@@ -33,25 +33,30 @@ class BloomFilter
 
   def init_bit_array(filepath)
     File.open(filepath) do |file|
-      file.each_line.lazy.map do |line|
-        hashes = []
-        offset_basis = nil
-
-        @hash_function_count.times do
-          new_hash = Hasher.fnv1(
-            line.strip,
-            variant: 64,
-            offset_basis: offset_basis
-          )
-
-          offset_basis = new_hash
-          hashes << new_hash % @size
+      file
+        .each_line
+        .lazy
+        .map { |line| compute_64bit_fnv1_hashes(line.strip) }
+        .reduce(0) do |bit_array, hashes|
+          hashes.reduce(bit_array) { |cbit_array, hash| cbit_array | 2**hash }
         end
-
-        hashes
-      end.reduce(0) do |bit_array, hashes|
-        hashes.reduce(bit_array) { |bit_array, hash| bit_array | 2**hash }
-      end
     end
+  end
+
+  def compute_64bit_fnv1(string, offset_basis = nil)
+    Hasher.fnv1(string, variant: 64, offset_basis: offset_basis)
+  end
+
+  def compute_64bit_fnv1_hashes(string)
+    hashes = []
+    offset_basis = nil
+
+    @hash_function_count.times do
+      new_hash = compute_64bit_fnv1(string, offset_basis)
+      offset_basis = new_hash
+      hashes << new_hash % @size
+    end
+
+    hashes
   end
 end
