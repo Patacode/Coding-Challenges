@@ -94,4 +94,6 @@ class BloomFilter
   def compute_index(hash)
     2**hash
   end
+
+  alias << add
 end
