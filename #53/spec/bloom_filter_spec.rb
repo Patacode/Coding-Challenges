@@ -4,11 +4,11 @@ require 'bloom_filter'
 
 RSpec.configure do |config|
   config.before(:context, target_cls: BloomFilter) do
-    @bloom_filter = BloomFilter.new('data/dict_sample.txt', epsilon: 0.1)
+    @bloom_filter = BloomFilter.new(100, epsilon: 0.1)
   end
 
   config.before(:example, fresh_data: true) do
-    @fresh_bloom_filter = BloomFilter.new('data/dict_sample.txt', epsilon: 0.1)
+    @fresh_bloom_filter = BloomFilter.new(100, epsilon: 0.1)
   end
 end
 
