@@ -32,6 +32,12 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
   end
 
   describe '#add', fresh_data: true do
+    it 'adds nothing to the bloom filter if provided element is empty' do
+      @fresh_bloom_filter.add('')
+
+      expect(@fresh_bloom_filter.to_i).to eq(0)
+    end
+
     it 'adds the provided element to the bloom filter' do
       @fresh_bloom_filter.add('hello')
 
