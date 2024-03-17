@@ -26,6 +26,22 @@ class BloomFilter
       .none?(0)
   end
 
+  def save_to_file(filepath)
+    cbit_array = @bit_array.clone
+    mask = 2**@size - 1
+    byte_size = 8
+
+    mask ^= mask >> byte_size
+    offset = byte_size
+    File.open("#{filepath}.bf", 'w') do |file|
+      while mask > 0
+        file << [(cbit_array & mask) >> @size - offset].pack('C')
+        mask >>= byte_size
+        offset += byte_size
+      end
+    end
+  end
+
   private
 
   def filesize(filepath)
