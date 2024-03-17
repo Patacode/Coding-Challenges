@@ -18,27 +18,24 @@ class BloomFilter
 
   def add(string)
     compute_64bit_fnv1_hashes(string.strip)
-      .each { |hash| @bit_array[@size - hash - 1] = 1 }
+      .each { |hash| @bit_array[hash] = 1 }
   end
 
   def include?(string)
     compute_64bit_fnv1_hashes(string.strip)
-      .map { |hash| @bit_array[@size - hash - 1] }
+      .map { |hash| @bit_array[hash] }
       .none?(0)
   end
 
   def save_to_file(filepath)
     cbit_array = to_i
-    mask = (2**@size) - 1
     byte_size = 8
+    mask = (2**byte_size) - 1
 
-    mask ^= mask >> byte_size
-    offset = byte_size
     File.open("#{filepath}.bf", 'w') do |file|
-      while mask.positive?
-        file << [(cbit_array & mask) >> (@size - offset)].pack('C')
-        mask >>= byte_size
-        offset += byte_size
+      while cbit_array.positive?
+        file << [cbit_array & mask].pack('C')
+        cbit_array >>= byte_size
       end
     end
   end
