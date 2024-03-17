@@ -46,12 +46,11 @@ File.open(dictionary) do |file|
   until file.eof?
     chunk = file.read(chunk_size)
     chunk_lines = chunk.split("\n")
-    p chunk_lines
 
     partial_line_detected = !chunk.end_with?("\n")
 
     bf << "#{last_line}#{chunk_lines[0]}"
-    chunk_lines[1..-2].each { |line| p line; bf << line }
+    chunk_lines[1..-2].each { |line| bf << line }
 
     last_line = chunk_lines[-1]
     bf << last_line unless partial_line_detected
