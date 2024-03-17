@@ -97,7 +97,7 @@ class BloomFilter
         .reverse_each
         .map { |v| format('%08d', v.to_s(2)) }
         .join
-        .gsub(/^0{#{bitmap.length * 8 - bytes[3]}}/, '')
+        .gsub(/^0{#{(bitmap.length * 8) - bytes[3]}}/, '')
     ].pack('B*')
 
     [bytes[1], bytes[2], bytes[3], content]
