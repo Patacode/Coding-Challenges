@@ -78,7 +78,7 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
       'returns true if the provided element is most likely in the set (acts ' \
       'as #include?)'
     ) do
-      expect(@fresh_bloom_filter === 'deleniti').to be(true)
+      expect(@fresh_bloom_filter === 'hello').to be(true)
     end
 
     it(
