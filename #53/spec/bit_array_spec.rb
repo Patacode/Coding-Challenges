@@ -21,4 +21,16 @@ RSpec.describe BitArray do
       expect { BitArray.new(100, bits_per_item: 65) }.to raise_error(ArgumentError)
     end
   end
+
+  describe '#size' do
+    it 'returns the size of the bit array, in bits' do
+      bit_array1 = BitArray.new(10)
+      bit_array2 = BitArray.new([255, 10, 20].pack('C*'))
+      bit_array3 = BitArray.new(100, bits_per_item: 64)
+
+      expect(bit_array1.size).to eq(10)
+      expect(bit_array2.size).to eq(24)
+      expect(bit_array3.size).to eq(100)
+    end
+  end
 end
