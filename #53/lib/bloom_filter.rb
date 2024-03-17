@@ -16,7 +16,7 @@ class BloomFilter
     @hash_function_count =
       data[1] || optimal_hash_function_qty(@size, element_count)
     @bit_array = BitArray.new(@size, data[3], reverse_byte: false)
-    @version = data[0] || 1
+    @version = data[0] || 0
   end
 
   def to_i
@@ -78,7 +78,7 @@ class BloomFilter
   end
 
   def build_header
-    [1_128_481_350, @version, @hash_function_count, @size].pack('NnnN')
+    [1_128_481_350, @version + 1, @hash_function_count, @size].pack('NnnN')
   end
 
   def load_from_file(filepath)
