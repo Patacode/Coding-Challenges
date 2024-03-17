@@ -39,7 +39,22 @@ ARGV.empty? ? parser.parse("-h") : parser.parse!
 dictionary = options[:dictionary]
 bf = BloomFilter.new(dictionary)
 
+chunk_size = 1024 * 1024 # 1 Mib
+last_line = ''
 File.open(dictionary) do |file|
+  until file.eof?
+    chunk = file.read(chunk_size)
+    chunk_lines = chunk.split("\n")
+    p chunk_lines
+
+    partial_line_detected = !chunk.end_with?("\n")
+
+    bf << "#{last_line}#{chunk_lines[0]}"
+    chunk_lines[1..-2].each { |line| p line; bf << line }
+
+    last_line = chunk_lines[-1]
+    bf << last_line unless partial_line_detected
+  end
   file.each_line { |line| bf << line.strip }
 end
 
