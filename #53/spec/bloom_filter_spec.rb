@@ -125,7 +125,7 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
 
       @fresh_bloom_filter.save_to_file('result')
 
-      bf = BloomFilter.load_from_file('result.bf')
+      bf = BloomFilter.new('result.bf')
 
       expect(bf.version).to eq(1)
       expect(bf.hash_function_count).to eq(4)
@@ -138,7 +138,7 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
 
     it 'raises an exception if the provided file is not of the right type' do
       load_bf_from_file = lambda do
-        BloomFilter.load_from_file('data/invalid_result_sample.bf')
+        BloomFilter.new('data/invalid_result_sample.bf')
       end
 
       expect { load_bf_from_file.call }.to raise_error(ArgumentError)
