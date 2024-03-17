@@ -96,4 +96,5 @@ class BloomFilter
   end
 
   alias << add
+  alias === include?
 end
