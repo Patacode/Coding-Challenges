@@ -4,6 +4,8 @@
 $LOAD_PATH.unshift File.expand_path('lib', __dir__)
 
 require 'optparse'
+require 'benchmark'
+
 require 'bloom_filter'
 
 options = {}
@@ -43,24 +45,55 @@ element_count = File.open(dictionary) do |file|
   file.each_line.count
 end
 
-bf = BloomFilter.new(element_count)
+bf = nil
+Benchmark.bm do |x|
+  x.report('add(0.01)') do
+    bf = BloomFilter.new(element_count)
+    chunk_size = 1024 * 1024 # 1 Mib
+    last_line = ''
+    File.open(dictionary) do |file|
+      until file.eof?
+        chunk = file.read(chunk_size)
+        chunk_lines = chunk.split("\n")
 
-chunk_size = 1024 * 1024 # 1 Mib
-last_line = ''
-File.open(dictionary) do |file|
-  until file.eof?
-    chunk = file.read(chunk_size)
-    chunk_lines = chunk.split("\n")
+        partial_line_detected = !chunk.end_with?("\n")
 
-    partial_line_detected = !chunk.end_with?("\n")
+        bf << "#{last_line}#{chunk_lines[0]}"
+        chunk_lines[1..-2].each { |line| bf << line }
 
-    bf << "#{last_line}#{chunk_lines[0]}"
-    chunk_lines[1..-2].each { |line| bf << line }
-
-    last_line = chunk_lines[-1]
-    bf << last_line unless partial_line_detected
+        last_line = chunk_lines[-1]
+        bf << last_line unless partial_line_detected
+      end
+      file.each_line { |line| bf << line.strip }
+    end
   end
-  file.each_line { |line| bf << line.strip }
-end
 
-bf.save_to_file('result')
+  x.report('save_to_file(0.01)') do
+    bf.save_to_file('result')
+  end
+
+  x.report('add(0.1)') do
+    bf = BloomFilter.new(element_count, epsilon: 0.1)
+    chunk_size = 1024 * 1024 # 1 Mib
+    last_line = ''
+    File.open(dictionary) do |file|
+      until file.eof?
+        chunk = file.read(chunk_size)
+        chunk_lines = chunk.split("\n")
+
+        partial_line_detected = !chunk.end_with?("\n")
+
+        bf << "#{last_line}#{chunk_lines[0]}"
+        chunk_lines[1..-2].each { |line| bf << line }
+
+        last_line = chunk_lines[-1]
+        bf << last_line unless partial_line_detected
+      end
+      file.each_line { |line| bf << line.strip }
+    end
+  end
+
+  x.report('save_to_file(0.1)') do
+    bf.save_to_file('result2')
+  end
+end
