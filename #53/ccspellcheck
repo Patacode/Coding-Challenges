@@ -19,6 +19,15 @@ OptionParser.accept(:text_file) do |filepath|
   filepath
 end
 
+OptionParser.accept(:bf_file) do |filepath|
+  err_msg = "- filepath #{filepath.inspect} must have a .bf extension"
+  err_msg2 = "- filepath #{filepath.inspect} does not exist"
+  raise OptionParser::InvalidArgument, err_msg unless filepath.end_with?('.bf')
+  raise OptionParser::InvalidArgument, err_msg2 unless File.exist?(filepath)
+
+  filepath
+end
+
 parser = OptionParser.new do |opts|
   opts.banner = 'Usage: ccspellcheck [options]'
 
@@ -35,11 +44,32 @@ parser = OptionParser.new do |opts|
   ) do |filepath|
     options[:dictionary] = filepath
   end
+
+  opts.on(
+    '-u',
+    '--use BLOOM_FILTER_FILE',
+    :bf_file,
+    'Use the provided bloom filter'
+  ) do |filepath|
+    options[:bloom_filter] = filepath
+  end
 end
 
 ARGV.empty? ? parser.parse('-h') : parser.parse!
 
 dictionary = options[:dictionary]
+bloom_filter = options[:bloom_filter]
+
+unless bloom_filter.nil?
+  bf = BloomFilter.new(bloom_filter)
+
+  puts "Loaded from file #{bloom_filter.inspect}"
+  puts "Version                       = #{bf.version}"
+  puts "Number of bits used           = #{bf.size}"
+  puts "Number of hash functions used = #{bf.hash_function_count}"
+
+  exit
+end
 
 element_count = File.open(dictionary) do |file|
   file.each_line.count
