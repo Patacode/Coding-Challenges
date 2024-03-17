@@ -33,6 +33,7 @@ class BloomFilter
     mask = (2**byte_size) - 1
 
     File.open("#{filepath}.bf", 'w') do |file|
+      file << build_header(1)
       while cbit_array.positive?
         file << [cbit_array & mask].pack('C')
         cbit_array >>= byte_size
@@ -67,6 +68,10 @@ class BloomFilter
     end
 
     hashes
+  end
+
+  def build_header(version)
+    [1128481350, version, @hash_function_count, @size].pack('NnnN')
   end
 
   alias << add
