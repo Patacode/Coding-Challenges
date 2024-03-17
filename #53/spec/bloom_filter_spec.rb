@@ -115,10 +115,19 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
   end
 
   describe '::load_from_file', fresh_data: true do
-    it 'loads the bloom filter from the provided filepath' do
-      bf = BloomFilter.load_from_file('data/valid_result_sample.bf')
+    after(:example) do
+      FileUtils.rm_f('result.bf')
+    end
 
-      expect(bf.version).to eq(2)
+    it 'loads the bloom filter from the provided filepath' do
+      @fresh_bloom_filter << 'hello'
+      @fresh_bloom_filter << 'world'
+
+      @fresh_bloom_filter.save_to_file('result')
+
+      bf = BloomFilter.load_from_file('result.bf')
+
+      expect(bf.version).to eq(1)
       expect(bf.hash_function_count).to eq(4)
       expect(bf.size).to eq(480)
       expect(bf.to_i).to eq(
