@@ -20,7 +20,7 @@ end
 parser = OptionParser.new do |opts|
   opts.banner = 'Usage: ccspellcheck [options]'
 
-  opts.on("-h", "--help", "prints this help") do
+  opts.on('-h', '--help', 'prints this help') do
     puts opts
     exit
   end
@@ -35,7 +35,7 @@ parser = OptionParser.new do |opts|
   end
 end
 
-ARGV.empty? ? parser.parse("-h") : parser.parse!
+ARGV.empty? ? parser.parse('-h') : parser.parse!
 
 dictionary = options[:dictionary]
 bf = BloomFilter.new(dictionary)
