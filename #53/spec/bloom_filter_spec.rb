@@ -113,4 +113,30 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
       )
     end
   end
+
+  describe '::load_from_file', fresh_data: true do
+    after(:example) do
+      FileUtils.rm_f('result.bf')
+    end
+
+    it 'loads the bloom filter from the provided filepath' do
+      bf = BloomFilter.load_from_file('data/valid_result_sample.bf')
+
+      expect(bf.version).to eq(2)
+      expect(bf.hash_function_count).to eq(4)
+      expect(bf.size).to eq(480)
+      expect(bf.to_i).to eq(
+        '4389825039010342043445127014979818049273005862983734804284885288792' \
+        '7407292118017101074114130836376897628232443929517096960'.to_i
+      )
+    end
+
+    it 'raises an exception if the provided file is not of the right type' do
+      load_bf_from_file = lambda do
+        BloomFilter.load_from_file('data/invalid_result_sample.bf')
+      end
+
+      expect { load_bf_from_file.call }.to raise_error(ArgumentError)
+    end
+  end
 end
