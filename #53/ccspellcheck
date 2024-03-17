@@ -38,7 +38,12 @@ end
 ARGV.empty? ? parser.parse('-h') : parser.parse!
 
 dictionary = options[:dictionary]
-bf = BloomFilter.new(dictionary)
+
+element_count = File.open(dictionary) do |file|
+  file.each_line.count
+end
+
+bf = BloomFilter.new(element_count)
 
 chunk_size = 1024 * 1024 # 1 Mib
 last_line = ''
