@@ -44,12 +44,6 @@ class BloomFilter
 
   private
 
-  def filesize(filepath)
-    File.open(filepath) do |file|
-      file.each_line.count
-    end
-  end
-
   def required_bit_qty(elem_qty, epsilon)
     -(elem_qty * Math.log(epsilon) / (Math.log(2)**2)).floor
   end
