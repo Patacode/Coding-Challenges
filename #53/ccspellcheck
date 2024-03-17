@@ -45,53 +45,30 @@ element_count = File.open(dictionary) do |file|
   file.each_line.count
 end
 
-bf = nil
-Benchmark.bm do |x|
-  x.report('add(0.01)') do
-    bf = BloomFilter.new(element_count)
-    chunk_size = 1024 * 1024 # 1 Mib
-    last_line = ''
-    File.open(dictionary) do |file|
-      until file.eof?
-        chunk = file.read(chunk_size)
-        chunk_lines = chunk.split("\n")
+bf = BloomFilter.new(element_count)
 
-        partial_line_detected = !chunk.end_with?("\n")
+puts "Number of bits used           = #{bf.size}"
+puts "Number of hash functions used = #{bf.hash_function_count}"
 
-        bf << "#{last_line}#{chunk_lines[0]}"
-        chunk_lines[1..-2].each { |line| bf << line }
+time = Benchmark.measure do
+  chunk_size = 1024 * 1024 # 1 Mib
+  last_line = ''
+  File.open(dictionary) do |file|
+    until file.eof?
+      chunk = file.read(chunk_size)
+      chunk_lines = chunk.split("\n")
 
-        last_line = chunk_lines[-1]
-        bf << last_line unless partial_line_detected
-      end
+      partial_line_detected = !chunk.end_with?("\n")
+
+      bf << "#{last_line}#{chunk_lines[0]}"
+      chunk_lines[1..-2].each { |line| bf << line }
+
+      last_line = chunk_lines[-1]
+      bf << last_line unless partial_line_detected
     end
   end
 
-  x.report('save_to_file(0.01)') do
-    bf.save_to_file('result')
-  end
-
-  x.report('add(0.1)') do
-    bf = BloomFilter.new(element_count, epsilon: 0.1)
-    chunk_size = 1024 * 1024 # 1 Mib
-    last_line = ''
-    File.open(dictionary) do |file|
-      until file.eof?
-        chunk = file.read(chunk_size)
-        chunk_lines = chunk.split("\n")
-
-        partial_line_detected = !chunk.end_with?("\n")
-
-        bf << "#{last_line}#{chunk_lines[0]}"
-        chunk_lines[1..-2].each { |line| bf << line }
-
-        last_line = chunk_lines[-1]
-        bf << last_line unless partial_line_detected
-      end
-    end
-  end
-
-  x.report('save_to_file(0.1)') do
-    bf.save_to_file('result2')
-  end
+  bf.save_to_file('result')
 end
+
+puts "It took #{time.format('%t')} seconds to build the bloom filter"
