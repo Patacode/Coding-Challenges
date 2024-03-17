@@ -60,20 +60,6 @@ class BloomFilter
     (bit_qty / elem_qty.to_f * Math.log(2)).ceil
   end
 
-  def init_bit_array(filepath)
-    File.open(filepath) do |file|
-      file
-        .each_line
-        .lazy
-        .map { |line| compute_64bit_fnv1_hashes(line.strip) }
-        .reduce(0) do |bit_array, hashes|
-          hashes.reduce(bit_array) do |cbit_array, hash|
-            cbit_array | compute_index(hash)
-          end
-        end
-    end
-  end
-
   def compute_64bit_fnv1(string, offset_basis = nil)
     Hasher.fnv1(string, variant: 64, offset_basis: offset_basis)
   end
