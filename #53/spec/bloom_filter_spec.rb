@@ -93,6 +93,35 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
     end
   end
 
+  describe '::load_from_file', fresh_data: true do
+    after(:example) do
+      FileUtils.rm_f('result.bf')
+    end
+
+    it 'loads the bloom filter from the provided filepath' do
+      bf = BloomFilter.new('data/valid_result_sample.bf')
+
+      expect(bf.version).to eq(1)
+      expect(bf.hash_function_count).to eq(7)
+      expect(bf.size).to eq(959)
+      expect(bf.to_i).to eq(
+        '22354498700539811367022530919019056329979339857052896657046489575053' \
+        '93443522819612898370907372385929686537866334073928258286221165776200' \
+        '74220136402882160106229345975413532937645661682376910190127867255683' \
+        '54849859237793965940549487257727878785083655579865224280522022694907' \
+        '8061150246770011'.to_i
+      )
+    end
+
+    it 'raises an exception if the provided file is not of the right type' do
+      load_bf_from_file = lambda do
+        BloomFilter.new('data/invalid_result_sample.bf')
+      end
+
+      expect { load_bf_from_file.call }.to raise_error(ArgumentError)
+    end
+  end
+
   describe '#save_to_file', fresh_data: true do
     after(:example) do
       FileUtils.rm_f('result.bf')
@@ -112,36 +141,18 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
         "\x00\x00@\x00\x00\x10\x00\x00\x11"
       )
     end
-  end
 
-  describe '::load_from_file', fresh_data: true do
-    after(:example) do
-      FileUtils.rm_f('result.bf')
-    end
-
-    it 'loads the bloom filter from the provided filepath' do
+    it 'increases the version of the saved file when first loaded from file' do
       @fresh_bloom_filter << 'hello'
       @fresh_bloom_filter << 'world'
 
       @fresh_bloom_filter.save_to_file('result')
 
       bf = BloomFilter.new('result.bf')
+      bf.save_to_file('result')
+      bf = BloomFilter.new('result.bf')
 
-      expect(bf.version).to eq(1)
-      expect(bf.hash_function_count).to eq(4)
-      expect(bf.size).to eq(480)
-      expect(bf.to_i).to eq(
-        '4389825039010342043445127014979818049273005862983734804284885288792' \
-        '7407292118017101074114130836376897628232443929517096960'.to_i
-      )
-    end
-
-    it 'raises an exception if the provided file is not of the right type' do
-      load_bf_from_file = lambda do
-        BloomFilter.new('data/invalid_result_sample.bf')
-      end
-
-      expect { load_bf_from_file.call }.to raise_error(ArgumentError)
+      expect(bf.version).to eq(2)
     end
   end
 end
