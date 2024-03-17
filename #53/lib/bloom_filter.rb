@@ -78,12 +78,12 @@ class BloomFilter
   end
 
   def build_header
-    [1128481350, @version, @hash_function_count, @size].pack('NnnN')
+    [1_128_481_350, @version, @hash_function_count, @size].pack('NnnN')
   end
 
   def load_from_file(filepath)
     bytes = File.read(filepath).unpack('NnnNC*')
-    bytes[0] == 1128481350 or raise ArgumentError, "Invalid header. Should start with CCBF"
+    bytes[0] == 1_128_481_350 or raise ArgumentError, "Invalid header. Should start with CCBF"
 
     [bytes[1], bytes[2], bytes[3], bytes[4..].reverse!.pack('C*')]
   end
