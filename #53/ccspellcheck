@@ -71,6 +71,11 @@ ARGV.empty? ? parser.parse('-h') : parser.parse!
 dictionary = options[:dictionary]
 bloom_filter = options[:bloom_filter]
 version = options[:version]
+words = ARGV
+
+if dictionary.nil? && bloom_filter.nil?
+  raise ArgumentError, 'Provide either a dictionary file or a bloom filter'
+end
 
 unless bloom_filter.nil?
   bf = BloomFilter.new(bloom_filter)
@@ -79,6 +84,12 @@ unless bloom_filter.nil?
   puts "Version                       = #{bf.version}"
   puts "Number of bits used           = #{bf.size}"
   puts "Number of hash functions used = #{bf.hash_function_count}"
+
+  incorrect_words = words.filter { |word| !bf.include?(word) }
+  unless incorrect_words.empty?
+    puts "\nThese words are spelt wrong:"
+    incorrect_words.each { |word| puts "  #{word}" } 
+  end
 
   exit
 end
