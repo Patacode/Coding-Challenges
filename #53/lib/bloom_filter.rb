@@ -65,6 +65,8 @@ class BloomFilter
   end
 
   def compute_64bit_fnv1_hashes(string)
+    return [] if string.empty?
+
     hashes = []
     offset_basis = nil
 
