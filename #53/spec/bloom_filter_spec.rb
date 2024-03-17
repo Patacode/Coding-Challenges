@@ -154,5 +154,17 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
 
       expect(bf.version).to eq(2)
     end
+
+    it 'increases the version of the saved file when saved multiple times' do
+      @fresh_bloom_filter << 'hello'
+      @fresh_bloom_filter << 'world'
+
+      @fresh_bloom_filter.save_to_file('result')
+      @fresh_bloom_filter.save_to_file('result')
+
+      bf = BloomFilter.new('result.bf')
+
+      expect(bf.version).to eq(2)
+    end
   end
 end
