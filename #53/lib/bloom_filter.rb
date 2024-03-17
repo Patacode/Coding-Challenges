@@ -7,30 +7,16 @@ class BloomFilter
   attr_reader :size, :hash_function_count, :version
 
   def initialize(
-    element_count = nil,
-    epsilon: 0.01,
-    size: nil,
-    hash_function_count: nil,
-    version: 1,
-    bit_array: nil
+    element_count,
+    epsilon: 0.01
   )
-    @size = size || required_bit_qty(element_count, epsilon)
+    data =  element_count.is_a?(String) ? load_from_file(element_count) : []
+
+    @size = data[2] || required_bit_qty(element_count, epsilon)
     @hash_function_count =
-      hash_function_count || optimal_hash_function_qty(@size, element_count)
-    @bit_array = BitArray.new(@size, bit_array, reverse_byte: false)
-    @version = version
-  end
-
-  def self.load_from_file(filepath)
-    bytes = File.read(filepath).unpack('NnnNC*')
-    bytes[0] == 1128481350 or raise ArgumentError, "Invalid header. Should start with CCBF"
-
-    new(
-      size: bytes[3],
-      hash_function_count: bytes[2],
-      version: bytes[1],
-      bit_array: bytes[4..].reverse!.pack('C*')
-    )
+      data[1] || optimal_hash_function_qty(@size, element_count)
+    @bit_array = BitArray.new(@size, data[3], reverse_byte: false)
+    @version = data[0] || 1
   end
 
   def to_i
@@ -93,6 +79,13 @@ class BloomFilter
 
   def build_header
     [1128481350, @version, @hash_function_count, @size].pack('NnnN')
+  end
+
+  def load_from_file(filepath)
+    bytes = File.read(filepath).unpack('NnnNC*')
+    bytes[0] == 1128481350 or raise ArgumentError, "Invalid header. Should start with CCBF"
+
+    [bytes[1], bytes[2], bytes[3], bytes[4..].reverse!.pack('C*')]
   end
 
   alias << add
