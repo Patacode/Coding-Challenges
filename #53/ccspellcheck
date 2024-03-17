@@ -36,4 +36,11 @@ end
 
 ARGV.empty? ? parser.parse("-h") : parser.parse!
 
-BloomFilter.new(options[:dictionary]).save_to_file('result')
+dictionary = options[:dictionary]
+bf = BloomFilter.new(dictionary)
+
+File.open(dictionary) do |file|
+  file.each_line { |line| bf << line.strip }
+end
+
+bf.save_to_file('result')
