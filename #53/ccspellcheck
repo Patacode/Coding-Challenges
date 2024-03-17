@@ -64,7 +64,6 @@ Benchmark.bm do |x|
         last_line = chunk_lines[-1]
         bf << last_line unless partial_line_detected
       end
-      file.each_line { |line| bf << line.strip }
     end
   end
 
@@ -89,7 +88,6 @@ Benchmark.bm do |x|
         last_line = chunk_lines[-1]
         bf << last_line unless partial_line_detected
       end
-      file.each_line { |line| bf << line.strip }
     end
   end
 
