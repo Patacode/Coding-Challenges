@@ -35,6 +35,8 @@ class BloomFilter
   end
 
   def save_to_file(filepath)
+    @version += 1
+
     cbit_array = to_i
     byte_size = 8
     mask = (2**byte_size) - 1
@@ -78,7 +80,7 @@ class BloomFilter
   end
 
   def build_header
-    [1_128_481_350, @version + 1, @hash_function_count, @size].pack('NnnN')
+    [1_128_481_350, @version, @hash_function_count, @size].pack('NnnN')
   end
 
   def load_from_file(filepath)
