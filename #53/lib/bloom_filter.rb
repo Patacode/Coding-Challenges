@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'bitarray'
 require 'hasher'
 
 class BloomFilter
@@ -8,26 +9,26 @@ class BloomFilter
   def initialize(element_count, epsilon: 0.01)
     @size = required_bit_qty(element_count, epsilon)
     @hash_function_count = optimal_hash_function_qty(@size, element_count)
-    @bit_array = 0
+    @bit_array = BitArray.new(@size, reverse_byte: false)
   end
 
   def to_i
-    @bit_array
+    @bit_array.to_s.to_i(2)
   end
 
   def add(string)
     compute_64bit_fnv1_hashes(string.strip)
-      .each { |hash| @bit_array |= compute_index(hash) }
+      .each { |hash| @bit_array[@size - hash - 1] = 1 }
   end
 
   def include?(string)
     compute_64bit_fnv1_hashes(string.strip)
-      .map { |hash| @bit_array & compute_index(hash) }
+      .map { |hash| @bit_array[@size - hash - 1] }
       .none?(0)
   end
 
   def save_to_file(filepath)
-    cbit_array = @bit_array.clone
+    cbit_array = to_i
     mask = (2**@size) - 1
     byte_size = 8
 
