@@ -17,8 +17,13 @@ RSpec.describe BitArray do
     end
 
     it 'raises an ArgumentError if bits_per_item is < 1 or > 64' do
-      expect { BitArray.new(100, bits_per_item: 0) }.to raise_error(ArgumentError)
-      expect { BitArray.new(100, bits_per_item: 65) }.to raise_error(ArgumentError)
+      expect { BitArray.new(100, bits_per_item: 0) }.to raise_error(
+        ArgumentError
+      )
+
+      expect { BitArray.new(100, bits_per_item: 65) }.to raise_error(
+        ArgumentError
+      )
     end
   end
 
