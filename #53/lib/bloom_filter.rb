@@ -8,7 +8,8 @@ class BloomFilter
 
   def initialize(
     element_count,
-    epsilon: 0.01
+    epsilon: 0.01,
+    version: 0
   )
     data =  element_count.is_a?(String) ? load_from_file(element_count) : []
 
@@ -16,7 +17,7 @@ class BloomFilter
     @hash_function_count =
       data[1] || optimal_hash_function_qty(@size, element_count)
     @bit_array = BitArray.new(@size, data[3], reverse_byte: false)
-    @version = data[0] || 0
+    @version = data[0] || version
   end
 
   def to_i
