@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'hasher'
+
 class BloomFilter
   attr_reader :size, :hash_function_count
 
