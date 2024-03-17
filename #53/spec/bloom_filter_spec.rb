@@ -166,5 +166,14 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
 
       expect(bf.version).to eq(2)
     end
+
+    it 'increases the version of the saved file according to given version' do
+      bf = BloomFilter.new(100, version: 3)
+      bf.save_to_file('result')
+
+      bf = BloomFilter.new('result.bf')
+
+      expect(bf.version).to eq(4)
+    end
   end
 end
