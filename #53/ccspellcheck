@@ -88,7 +88,7 @@ unless bloom_filter.nil?
   incorrect_words = words.filter { |word| !bf.include?(word) }
   unless incorrect_words.empty?
     puts "\nThese words are spelt wrong:"
-    incorrect_words.each { |word| puts "  #{word}" } 
+    incorrect_words.each { |word| puts "  #{word}" }
   end
 
   exit
