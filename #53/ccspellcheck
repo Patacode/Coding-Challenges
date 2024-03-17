@@ -8,7 +8,9 @@ require 'benchmark'
 
 require 'bloom_filter'
 
-options = {}
+options = {
+  version: 1
+}
 
 OptionParser.accept(:text_file) do |filepath|
   err_msg = "- filepath #{filepath.inspect} must have a .txt extension"
@@ -53,12 +55,22 @@ parser = OptionParser.new do |opts|
   ) do |filepath|
     options[:bloom_filter] = filepath
   end
+
+  opts.on(
+    '-v',
+    '--version VERSION_NUMBER',
+    Integer,
+    "Set version of built bloom filter (DEFAULT: #{options[:version]})"
+  ) do |version|
+    options[:version] = version
+  end
 end
 
 ARGV.empty? ? parser.parse('-h') : parser.parse!
 
 dictionary = options[:dictionary]
 bloom_filter = options[:bloom_filter]
+version = options[:version]
 
 unless bloom_filter.nil?
   bf = BloomFilter.new(bloom_filter)
@@ -75,7 +87,7 @@ element_count = File.open(dictionary) do |file|
   file.each_line.count
 end
 
-bf = BloomFilter.new(element_count)
+bf = BloomFilter.new(element_count, version: version - 1)
 
 puts "Number of bits used           = #{bf.size}"
 puts "Number of hash functions used = #{bf.hash_function_count}"
