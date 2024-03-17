@@ -38,4 +38,17 @@ RSpec.describe BitArray do
       expect(bit_array3.size).to eq(100)
     end
   end
+
+  describe '#internal_array_clone' do
+    it 'returns a clone of the internal array backed by the bit array' do
+      bit_array1 = BitArray.new(10)
+      bit_array2 = BitArray.new([255, 10, 20].pack('C*'))
+      bit_array3 = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 16)
+      bit_array1 = BitArray.new(10, bits_per_item: 52)
+
+      expect(bit_array1.internal_array_clone).to eq([0])
+      expect(bit_array2.internal_array_clone).to eq([16714260])
+      expect(bit_array3.internal_array_clone).to eq([65290, 20])
+    end
+  end
 end
