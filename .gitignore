@@ -81,3 +81,4 @@ build-iPhoneSimulator/
 
 .aliases
 *.bf
+!*/data/*.bf
