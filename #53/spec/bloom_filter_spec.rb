@@ -115,10 +115,6 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
   end
 
   describe '::load_from_file', fresh_data: true do
-    after(:example) do
-      FileUtils.rm_f('result.bf')
-    end
-
     it 'loads the bloom filter from the provided filepath' do
       bf = BloomFilter.load_from_file('data/valid_result_sample.bf')
 
