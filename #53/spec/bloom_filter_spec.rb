@@ -59,7 +59,7 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
 
   describe '#save_to_file' do
     after(:example) do
-      File.delete('result.bf') if File.exist?('result.bf')
+      File.rm_f('result.bf')
     end
 
     it 'saves the internal bit array of bloom filter in a file on disk' do
