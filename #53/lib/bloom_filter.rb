@@ -34,7 +34,7 @@ class BloomFilter
     mask ^= mask >> byte_size
     offset = byte_size
     File.open("#{filepath}.bf", 'w') do |file|
-      while mask > 0
+      while mask.positive?
         file << [(cbit_array & mask) >> (@size - offset)].pack('C')
         mask >>= byte_size
         offset += byte_size
