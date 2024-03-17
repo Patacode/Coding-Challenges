@@ -91,16 +91,19 @@ class BloomFilter
       'Invalid header. Should start with CCBF'
     )
 
-    bitmap = bytes[4..]
-    content = [
-      bitmap
-        .reverse_each
-        .map { |v| format('%08d', v.to_s(2)) }
-        .join
-        .gsub(/^0{#{(bitmap.length * 8) - bytes[3]}}/, '')
-    ].pack('B*')
+    content = [bytes_to_bit_string(bytes)].pack('B*')
 
     [bytes[1], bytes[2], bytes[3], content]
+  end
+
+  def bytes_to_bit_string(bytes)
+    bitmap = bytes[4..]
+
+    bitmap
+      .reverse_each
+      .map { |v| format('%08d', v.to_s(2)) }
+      .join
+      .gsub(/^0{#{(bitmap.length * 8) - bytes[3]}}/, '')
   end
 
   alias << add
