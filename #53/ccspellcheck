@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path('lib', __dir__)
+
+require 'optparse'
+require 'bloom_filter'
+
+options = {}
+
+OptionParser.accept(:text_file) do |filepath|
+  err_msg = "- filepath #{filepath.inspect} must have a .txt extension"
+  err_msg2 = "- filepath #{filepath.inspect} does not exist"
+  raise OptionParser::InvalidArgument, err_msg unless filepath.end_with?('.txt')
+  raise OptionParser::InvalidArgument, err_msg2 unless File.exist?(filepath)
+
+  filepath
+end
+
+parser = OptionParser.new do |opts|
+  opts.banner = 'Usage: ccspellcheck [options]'
+
+  opts.on("-h", "--help", "prints this help") do
+    puts opts
+    exit
+  end
+
+  opts.on(
+    '-b',
+    '--build DICTIONARY_FILE',
+    :text_file,
+    'Build bloom filter'
+  ) do |filepath|
+    options[:dictionary] = filepath
+  end
+end
+
+ARGV.empty? ? parser.parse("-h") : parser.parse!
+
+BloomFilter.new(options[:dictionary]).save_to_file('result')
