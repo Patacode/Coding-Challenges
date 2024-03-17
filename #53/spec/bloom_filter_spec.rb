@@ -93,7 +93,7 @@ RSpec.describe BloomFilter, target_cls: BloomFilter do
     end
   end
 
-  describe '::load_from_file', fresh_data: true do
+  describe '::new', fresh_data: true do
     after(:example) do
       FileUtils.rm_f('result.bf')
     end
