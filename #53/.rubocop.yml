@@ -10,3 +10,7 @@ Metrics/BlockLength:
 
 Metrics/MethodLength:
   Max: 15
+
+Style/CaseEquality:
+  Exclude:
+    - 'spec/**/*.rb'
