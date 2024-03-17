@@ -5,7 +5,7 @@ require 'hasher'
 class BloomFilter
   attr_reader :size, :hash_function_count
 
-  def initialize(element_count, epsilon: 0.1)
+  def initialize(element_count, epsilon: 0.01)
     @size = required_bit_qty(element_count, epsilon)
     @hash_function_count = optimal_hash_function_qty(@size, element_count)
     @bit_array = 0
