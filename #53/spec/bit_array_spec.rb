@@ -39,6 +39,20 @@ RSpec.describe BitArray do
     end
   end
 
+  describe '#bits_per_item' do
+    it 'returns the number of bits used by each item in the internal array' do
+      bit_array = BitArray.new(10, bits_per_item: 54)
+
+      expect(bit_array.bits_per_item).to eq(54)
+    end
+
+    it 'returns a default value of 64' do
+      bit_array = BitArray.new(10)
+
+      expect(bit_array.bits_per_item).to eq(64)
+    end
+  end
+
   describe '#internal_array_clone' do
     it 'returns accurately the internal array backed by the bit array' do
       bit_array1 = BitArray.new(10)
