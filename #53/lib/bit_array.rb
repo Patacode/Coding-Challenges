@@ -6,8 +6,7 @@ class BitArray
   def initialize(initial_data, bits_per_item: 64)
     raise ArgumentError if bits_per_item < 1 || bits_per_item > 64
 
-    @size =
-      initial_data.is_a?(String) ? initial_data.bytesize * 8 : initial_data
+    @size = init_size(initial_data)
     @internal_array = init_internal_array(initial_data, @size, bits_per_item)
   end
 
@@ -16,6 +15,10 @@ class BitArray
   end
 
   private
+
+  def init_size(initial_data)
+    initial_data.is_a?(String) ? initial_data.bytesize * 8 : initial_data
+  end
 
   def init_internal_array(initial_data, size, bits_per_item)
     res = [0] * (size / bits_per_item.to_f).ceil
