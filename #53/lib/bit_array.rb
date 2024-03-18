@@ -62,4 +62,6 @@ class BitArray
 
     res
   end
+
+  alias at []
 end
