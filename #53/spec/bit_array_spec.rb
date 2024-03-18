@@ -134,4 +134,38 @@ RSpec.describe BitArray do
       expect { bit_array.at(10) }.to raise_error(IndexError)
     end
   end
+
+  describe '#set' do
+    it(
+      'sets the bit at given index to 1 if given value is truthy but 0 ' \
+      '(acts as #[]=)'
+    ) do
+      bit_array = BitArray.new(10)
+
+      bit_array.set(0, [])
+      bit_array.set(2, true)
+      bit_array.set(4, 1)
+      bit_array.set(8, 0)
+
+      expect(bit_array[0]).to eq(1)
+      expect(bit_array[2]).to eq(1)
+      expect(bit_array[4]).to eq(1)
+      expect(bit_array[8]).not_to eq(1)
+    end
+
+    it(
+      'sets the bit at given index to 0 if given value is falsy or 0 ' \
+      '(acts as #[]=)'
+    ) do
+      bit_array = BitArray.new(10)
+
+      bit_array.set(0, nil)
+      bit_array.set(2, false)
+      bit_array.set(4, 0)
+
+      expect(bit_array[0]).to eq(0)
+      expect(bit_array[2]).to eq(0)
+      expect(bit_array[4]).to eq(0)
+    end
+  end
 end
