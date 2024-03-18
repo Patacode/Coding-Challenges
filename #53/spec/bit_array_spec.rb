@@ -89,6 +89,24 @@ RSpec.describe BitArray do
       expect { bit_array[-1] }.to raise_error(IndexError)
       expect { bit_array[10] }.to raise_error(IndexError)
     end
+
+    it(
+      'returns the bits found in the given range in the same format as the ' \
+      'one used internally'
+    ) do
+      bit_array1 = BitArray.new([255, 10, 20].pack('C*'))
+      bit_array2 = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 16)
+
+      expect(bit_array1[5..]).to eq([461332])
+      expect(bit_array2[1...23]).to eq([65044, 10])
+    end
+
+    it 'raises an RangeError if given range indexes are out of bounds' do
+      bit_array = BitArray.new(10)
+
+      expect { bit_array[-1..] }.to raise_error(RangeError)
+      expect { bit_array[2..10] }.to raise_error(RangeError)
+    end
   end
 
   describe '#[]=' do
