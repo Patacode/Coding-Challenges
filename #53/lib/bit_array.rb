@@ -64,4 +64,5 @@ class BitArray
   end
 
   alias at []
+  alias set []=
 end
