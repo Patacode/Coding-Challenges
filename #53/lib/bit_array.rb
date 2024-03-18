@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class BitArray
-  attr_reader :size
+  attr_reader :size, :bits_per_item
 
   def initialize(initial_data, bits_per_item: 64)
     raise ArgumentError if bits_per_item < 1 || bits_per_item > 64
 
     @size = init_size(initial_data)
     @internal_array = init_internal_array(initial_data, @size, bits_per_item)
+    @bits_per_item = bits_per_item
   end
 
   def internal_array_clone
