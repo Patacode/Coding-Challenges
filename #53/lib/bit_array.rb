@@ -24,6 +24,22 @@ class BitArray
     (@internal_array[item_index] >> offset) & 0x1
   end
 
+  def []=(index, value)
+    bit =
+      if value.is_a?(Integer)
+        value.zero? ? 0 : 1
+      else
+        value ? 1 : 0
+      end
+
+    return if bit.zero? 
+
+    item_index = index / bits_per_item
+    offset = bits_per_item - index
+
+    @internal_array[item_index] |= (2**offset >> 1)
+  end
+
   private
 
   def init_size(initial_data)
