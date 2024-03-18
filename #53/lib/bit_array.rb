@@ -27,7 +27,7 @@ class BitArray
     item_pointer = -1
     bits_processed = 0
     initial_data.each_byte do |byte|
-      item_pointer += 1 if (bits_processed % bits_per_item) == 0
+      item_pointer += 1 if (bits_processed % bits_per_item).zero?
       bits_processed += 8
 
       res[item_pointer] <<= 8
