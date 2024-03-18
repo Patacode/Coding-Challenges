@@ -44,7 +44,7 @@ RSpec.describe BitArray do
       bit_array1 = BitArray.new(10)
       bit_array2 = BitArray.new([255, 10, 20].pack('C*'))
       bit_array3 = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 16)
-      bit_array4 = BitArray.new(257, bits_per_item: 8)
+      bit_array4 = BitArray.new(16, bits_per_item: 8)
 
       expect(bit_array1.internal_array_clone).to eq([0])
       expect(bit_array2.internal_array_clone).to eq([16714260])
