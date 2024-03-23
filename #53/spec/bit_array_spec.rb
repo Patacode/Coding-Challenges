@@ -77,10 +77,11 @@ RSpec.describe BitArray do
 
   describe '#[]' do
     it 'returns the value of the bit at given index' do
-      bit_array = BitArray.new([255, 10, 20].pack('C*'))
+      bit_array = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 16)
 
       expect(bit_array[0]).to eq(1)
       expect(bit_array[8]).to eq(0)
+      expect(bit_array[19]).to eq(1)
     end
 
     it 'raises an IndexError if given index is out of bounds' do
