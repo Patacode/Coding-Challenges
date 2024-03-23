@@ -53,7 +53,8 @@ class BitArray
     else
       raise IndexError if index < 0 || index >= size
       item_index = index / @bits_per_item
-      offset = @internal_array[item_index].bit_length - index - 1
+      offset =
+        @internal_array[item_index].bit_length - (index % @bits_per_item) - 1
 
       (@internal_array[item_index] >> offset) & 0x1
     end
