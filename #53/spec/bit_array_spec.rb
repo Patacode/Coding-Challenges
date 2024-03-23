@@ -98,7 +98,7 @@ RSpec.describe BitArray do
       bit_array2 = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 16)
 
       expect(bit_array1[5..]).to eq([461332])
-      expect(bit_array2[1...23]).to eq([65044, 10])
+      expect(bit_array2[1...23]).to eq([32522, 10])
     end
 
     it 'raises an RangeError if given range indexes are out of bounds' do
