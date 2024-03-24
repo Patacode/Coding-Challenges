@@ -99,6 +99,10 @@ class BitArray
     end
   end
 
+  def to_s(base = 2)
+    @internal_array.map { |item| item.to_s(base) }.join(' ')
+  end
+
   private
 
   def init_size(initial_data)
