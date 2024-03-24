@@ -27,7 +27,7 @@ class BitArray
   end
 
   def []=(index, value)
-    raise IndexError if index < 0 || index >= @size
+    raise IndexError if index.negative? || index >= @size
 
     bit = value ? (value.is_a?(Integer) ? (value.zero? ? 0 : 1) : 1) : 0
     item_index = index / @bits_per_item
@@ -49,7 +49,7 @@ class BitArray
   def each_byte(&proc)
     res = @internal_array.reduce([]) do |acc, item|
       offset = @bits_per_item
-      while offset > 0
+      while offset.positive?
         offset -= 8
         acc << ((item >> offset) & 0b1111_1111)
       end
@@ -96,7 +96,7 @@ class BitArray
       mask = 2**value - 1
       @internal_array = @internal_array.reduce([]) do |acc, item|
         offset = @bits_per_item
-        while offset > 0
+        while offset.positive?
           offset -= value
           acc << ((item >> offset) & mask)
         end
