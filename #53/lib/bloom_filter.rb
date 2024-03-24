@@ -18,11 +18,9 @@ class BloomFilter
       data[1] || optimal_hash_function_qty(@size, element_count)
     @bit_array = BitArray.new(data[3] || @size, bits_per_item: 8)
     @version = data[0] || version
-  end
 
-  # def to_i
-  #   @bit_array.to_s.to_i(2)
-  # end
+    @bit_array.bits_per_item = 64
+  end
 
   def add(string)
     compute_64bit_fnv1_hashes(string.strip)
