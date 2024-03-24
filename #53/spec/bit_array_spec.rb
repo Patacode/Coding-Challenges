@@ -25,6 +25,12 @@ RSpec.describe BitArray do
         ArgumentError
       )
     end
+
+    it 'raises an ArgumentError if bits_per_item is not a multiple of 8' do
+      expect { BitArray.new(100, bits_per_item: 12) }.to raise_error(
+        ArgumentError
+      )
+    end
   end
 
   describe '#size' do
@@ -58,16 +64,12 @@ RSpec.describe BitArray do
       bit_array1 = BitArray.new(10)
       bit_array2 = BitArray.new([255, 10, 20].pack('C*'))
       bit_array3 = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 16)
-      bit_array4 = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 7)
-      bit_array5 = BitArray.new([255, 10, 20].pack('C*'), bits_per_item: 9)
-      bit_array6 = BitArray.new(16, bits_per_item: 8)
+      bit_array4 = BitArray.new(16, bits_per_item: 8)
 
       expect(bit_array1.internal_array_clone).to eq([0])
       expect(bit_array2.internal_array_clone).to eq([16_714_260])
       expect(bit_array3.internal_array_clone).to eq([65_290, 20])
-      expect(bit_array4.internal_array_clone).to eq([127, 66, 66, 4])
-      expect(bit_array5.internal_array_clone).to eq([510, 40, 20])
-      expect(bit_array6.internal_array_clone).to eq([0, 0])
+      expect(bit_array4.internal_array_clone).to eq([0, 0])
     end
 
     it 'returns a clone of the internal array backed by the bit array' do
