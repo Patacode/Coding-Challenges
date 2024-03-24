@@ -23,6 +23,7 @@ class BitArray
 
   def []=(index, value)
     raise IndexError if index.negative? || index >= @size
+
     bit = map_to_bit(value)
     item_index = index / @bits_per_item
     item_bit_size = compute_item_bit_size(item_index)
