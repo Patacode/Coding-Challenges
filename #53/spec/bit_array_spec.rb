@@ -137,6 +137,13 @@ RSpec.describe BitArray do
       expect(bit_array[3]).to eq(0)
       expect(bit_array[16]).to eq(0)
     end
+
+    it 'raises an IndexError if given index is out of bounds' do
+      bit_array = BitArray.new(10)
+
+      expect { bit_array[-1] = 1 }.to raise_error(IndexError)
+      expect { bit_array[10] = 0 }.to raise_error(IndexError)
+    end
   end
 
   describe '#at' do
