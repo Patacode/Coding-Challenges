@@ -38,13 +38,7 @@ class BitArray
 
   def each_byte(&proc)
     res = @internal_array.each_with_object([]) do |item, acc|
-      offset = @bits_per_item
-      while offset.positive?
-        offset -= 8
-        acc << ((item >> offset) & 0b1111_1111)
-      end
-
-      acc
+      acc.concat(explode_item(item, 8))
     end
 
     proc ? res.each { |byte| proc.call(byte) } : res.each
@@ -153,16 +147,22 @@ class BitArray
   end
 
   def decrease_items_size(new_size)
-    mask = (2**new_size) - 1
     @internal_array = @internal_array.each_with_object([]) do |item, acc|
-      offset = @bits_per_item
-      while offset.positive?
-        offset -= new_size
-        acc << ((item >> offset) & mask)
-      end
-
-      acc
+      acc.concat(explode_item(item, new_size))
     end
+  end
+
+  def explode_item(item, new_size)
+    res = []
+    offset = @bits_per_item
+    mask = (2**new_size) - 1
+
+    while offset.positive?
+      offset -= new_size
+      res << ((item >> offset) & mask)
+    end
+
+    res
   end
 
   alias at []
