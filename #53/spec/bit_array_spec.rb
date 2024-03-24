@@ -82,7 +82,7 @@ RSpec.describe BitArray do
       expect(bit_array[0]).to eq(1)
       expect(bit_array[8]).to eq(1)
       expect(bit_array[14]).to eq(0)
-      expect(bit_array[18]).to eq(1)
+      expect(bit_array[23]).to eq(1)
     end
 
     it 'raises an IndexError if given index is out of bounds' do
@@ -123,7 +123,7 @@ RSpec.describe BitArray do
       expect(bit_array[1]).to eq(1)
       expect(bit_array[14]).to eq(1)
       expect(bit_array[16]).to eq(0)
-      expect(bit_array[9]).not_to eq(1)
+      expect(bit_array[9]).to eq(1)
     end
 
     it 'sets the bit at given index to 0 if given value is falsy or 0' do
