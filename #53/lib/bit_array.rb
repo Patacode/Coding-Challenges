@@ -112,7 +112,7 @@ class BitArray
   end
 
   def unset_bit(index, offset, size)
-    @internal_array[index] &= ((2**size) - 1) - 2**offset
+    @internal_array[index] &= ((2**size) - 1) - (2**offset)
   end
 
   def increase_items_size(new_size)
@@ -137,7 +137,7 @@ class BitArray
   end
 
   def decrease_items_size(new_size)
-    mask = 2**new_size - 1
+    mask = (2**new_size) - 1
     @internal_array = @internal_array.each_with_object([]) do |item, acc|
       offset = @bits_per_item
       while offset.positive?
