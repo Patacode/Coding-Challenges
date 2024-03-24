@@ -12,7 +12,7 @@ class BitArray
     @bits_per_item = bits_per_item
   end
 
-  def internal_array_clone
+  def to_a
     @internal_array.clone
   end
 
