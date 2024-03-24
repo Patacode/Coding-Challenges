@@ -47,6 +47,18 @@ class BitArray
     end
   end
 
+  def each_byte
+    @internal_array.reduce([]) do |acc, item|
+      offset = @bits_per_item
+      while offset > 0
+        offset -= 8
+        acc << ((item >> offset) & 0b1111_1111)
+      end
+
+      acc
+    end.each
+  end
+
   def to_a
     @internal_array.clone
   end
