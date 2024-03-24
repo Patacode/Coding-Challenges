@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'bitarray'
+require 'bit_array'
 require 'hasher'
 
 class BloomFilter
@@ -16,13 +16,13 @@ class BloomFilter
     @size = data[2] || required_bit_qty(element_count, epsilon)
     @hash_function_count =
       data[1] || optimal_hash_function_qty(@size, element_count)
-    @bit_array = BitArray.new(@size, data[3], reverse_byte: false)
+    @bit_array = BitArray.new(data[3] || @size, bits_per_item: 8)
     @version = data[0] || version
   end
 
-  def to_i
-    @bit_array.to_s.to_i(2)
-  end
+  # def to_i
+  #   @bit_array.to_s.to_i(2)
+  # end
 
   def add(string)
     compute_64bit_fnv1_hashes(string.strip)
@@ -30,6 +30,8 @@ class BloomFilter
   end
 
   def include?(string)
+    return false if string.empty?
+
     compute_64bit_fnv1_hashes(string.strip)
       .map { |hash| @bit_array[hash] }
       .none?(0)
@@ -38,15 +40,10 @@ class BloomFilter
   def save_to_file(filepath)
     @version += 1
 
-    cbit_array = to_i
-    byte_size = 8
-    mask = (2**byte_size) - 1
-
     File.open("#{filepath}.bf", 'w') do |file|
       file << build_header
-      while cbit_array.positive?
-        file << [cbit_array & mask].pack('C')
-        cbit_array >>= byte_size
+      @bit_array.each_byte do |byte|
+        file << [byte].pack('C')
       end
     end
   end
@@ -91,19 +88,7 @@ class BloomFilter
       'Invalid header. Should start with CCBF'
     )
 
-    content = [bytes_to_bit_string(bytes)].pack('B*')
-
-    [bytes[1], bytes[2], bytes[3], content]
-  end
-
-  def bytes_to_bit_string(bytes)
-    bitmap = bytes[4..]
-
-    bitmap
-      .reverse_each
-      .map { |v| format('%08d', v.to_s(2)) }
-      .join
-      .gsub(/^0{#{(bitmap.length * 8) - bytes[3]}}/, '')
+    [bytes[1], bytes[2], bytes[3], bytes[4..]]
   end
 
   alias << add
