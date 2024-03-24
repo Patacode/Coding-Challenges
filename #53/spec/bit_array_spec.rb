@@ -16,18 +16,12 @@ RSpec.describe BitArray do
       BitArray.new(100, bits_per_item: 64)
     end
 
-    it 'raises an ArgumentError if bits_per_item is < 8 or > 64' do
-      expect { BitArray.new(100, bits_per_item: 7) }.to raise_error(
+    it 'raises an ArgumentError if bits_per_item is not in [8, 16, 32, 64]' do
+      expect { BitArray.new(100, bits_per_item: 9) }.to raise_error(
         ArgumentError
       )
 
-      expect { BitArray.new(100, bits_per_item: 65) }.to raise_error(
-        ArgumentError
-      )
-    end
-
-    it 'raises an ArgumentError if bits_per_item is not a multiple of 8' do
-      expect { BitArray.new(100, bits_per_item: 12) }.to raise_error(
+      expect { BitArray.new(100, bits_per_item: 24) }.to raise_error(
         ArgumentError
       )
     end
@@ -76,17 +70,11 @@ RSpec.describe BitArray do
       expect(bit_array.to_a).to eq([0, 255, 0, 10, 0, 20])
     end
 
-    it 'raises an ArgumentError if value is < 8 or > 64' do
+    it 'raises an ArgumentError if value is not in [8, 16, 32, 64]' do
       bit_array = BitArray.new(10)
 
-      expect { bit_array.bits_per_item = 7 }.to raise_error(ArgumentError)
+      expect { bit_array.bits_per_item = 40 }.to raise_error(ArgumentError)
       expect { bit_array.bits_per_item = 65 }.to raise_error(ArgumentError)
-    end
-
-    it 'raises an ArgumentError if value is not multiple of 8' do
-      bit_array = BitArray.new(10)
-
-      expect { bit_array.bits_per_item = 9 }.to raise_error(ArgumentError)
     end
   end
 
