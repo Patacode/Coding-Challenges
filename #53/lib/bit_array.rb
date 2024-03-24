@@ -58,11 +58,7 @@ class BitArray
       acc
     end
 
-    if proc
-      res.each { |byte| proc.call(byte) }
-    else
-      res.each
-    end
+    proc ? res.each { |byte| proc.call(byte) } : res.each
   end
 
   def to_a
