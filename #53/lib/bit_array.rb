@@ -47,8 +47,8 @@ class BitArray
     end
   end
 
-  def each_byte
-    @internal_array.reduce([]) do |acc, item|
+  def each_byte(&proc)
+    res = @internal_array.reduce([]) do |acc, item|
       offset = @bits_per_item
       while offset > 0
         offset -= 8
@@ -56,7 +56,13 @@ class BitArray
       end
 
       acc
-    end.each
+    end
+
+    if proc
+      res.each { |byte| proc.call(byte) }
+    else
+      res.each
+    end
   end
 
   def to_a
