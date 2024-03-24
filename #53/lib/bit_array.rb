@@ -12,7 +12,7 @@ class BitArray
   end
 
   def [](index)
-    raise IndexError if index < 0 || index >= @size
+    raise IndexError if index.negative? || index >= @size
 
     item_index = index / @bits_per_item
     item_bit_size =
