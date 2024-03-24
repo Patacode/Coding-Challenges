@@ -204,4 +204,14 @@ RSpec.describe BitArray do
       expect { bit_array.set(10, 0) }.to raise_error(IndexError)
     end
   end
+
+  describe '#to_s' do
+    it 'returns the binary string representation of the whole bit array' do
+      bit_array1 = BitArray.new([148, 145, 5].pack('C*'), bits_per_item: 8)
+      bit_array2 = BitArray.new([148, 145, 5].pack('C*'), bits_per_item: 16)
+
+      expect(bit_array1.to_s).to eq('10010100 10010001 00000101')
+      expect(bit_array2.to_s).to eq('1001010010010001 0000000000000101')
+    end
+  end
 end
