@@ -15,12 +15,7 @@ class BitArray
     raise IndexError if index.negative? || index >= @size
 
     item_index = index / @bits_per_item
-    item_bit_size =
-      if item_index == @internal_array.length - 1
-        @size - ((@internal_array.length - 1) * @bits_per_item)
-      else
-        @bits_per_item
-      end
+    item_bit_size = compute_item_bit_size(item_index)
     offset = item_bit_size - (index % @bits_per_item) - 1
 
     (@internal_array[item_index] >> offset) & 0x1
@@ -30,18 +25,13 @@ class BitArray
     raise IndexError if index.negative? || index >= @size
     bit = map_to_bit(value)
     item_index = index / @bits_per_item
-    item_bit_size =
-      if item_index == @internal_array.length - 1
-        @size - ((@internal_array.length - 1) * @bits_per_item)
-      else
-        @bits_per_item
-      end
+    item_bit_size = compute_item_bit_size(item_index)
     offset = item_bit_size - (index % @bits_per_item) - 1 
 
     if bit == 1
-      @internal_array[item_index] |= 2**offset
+      set_bit(item_index, offset)
     else
-      @internal_array[item_index] &= ((2**item_bit_size) - 1) - 2**offset
+      unset_bit(item_index, offset, item_bit_size)
     end
   end
 
@@ -132,6 +122,22 @@ class BitArray
     else
       0
     end
+  end
+
+  def compute_item_bit_size(index)
+    if index == @internal_array.length - 1
+      size - ((@internal_array.length - 1) * @bits_per_item)
+    else
+      @bits_per_item
+    end
+  end
+
+  def set_bit(index, offset)
+    @internal_array[index] |= 2**offset
+  end
+
+  def unset_bit(index, offset, size)
+    @internal_array[index] &= ((2**size) - 1) - 2**offset
   end
 
   alias at []
