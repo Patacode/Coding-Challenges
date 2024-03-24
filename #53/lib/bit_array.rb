@@ -25,7 +25,7 @@ class BitArray
       raise RangeError if bounded_end < 0 || bounded_end >= @size
 
       res = []
-      item_index = 0
+      item_index = bounded_start / @bits_per_item
       processed_bits = bounded_start
       left_over_bits = bounded_start % @bits_per_item
       last_item_bit_size =
