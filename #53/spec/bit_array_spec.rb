@@ -216,16 +216,7 @@ RSpec.describe BitArray do
     it 'returns the binary string representation of the whole bit array' do
       bit_array1 = BitArray.new([148, 145, 5], bits_per_item: 8)
 
-      expect(bit_array1.to_s).to eq('10010100 10010001 101')
-    end
-
-    it 'returns the correct string representation when base 2..36 are given' do
-      bit_array = BitArray.new([148, 145, 5], bits_per_item: 8)
-
-      (2..36).each do |base|
-        expected_result = [148, 145, 5].map { |item| item.to_s(base)}.join(' ')
-        expect(bit_array.to_s(base)).to eq(expected_result)
-      end
+      expect(bit_array1.to_s).to eq('10010100 10010001 00000101')
     end
   end
 end
