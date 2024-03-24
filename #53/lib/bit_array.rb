@@ -14,20 +14,20 @@ class BitArray
   def [](index)
     raise IndexError if index.negative? || index >= @size
 
-    item_index = index / @bits_per_item
+    item_index = compute_item_index(index)
     item_bit_size = compute_item_bit_size(item_index)
-    offset = item_bit_size - (index % @bits_per_item) - 1
+    offset = compute_relative_offset(index, item_bit_size)
 
-    (@internal_array[item_index] >> offset) & 0x1
+    get_bit(item_index, offset)
   end
 
   def []=(index, value)
     raise IndexError if index.negative? || index >= @size
 
     bit = map_to_bit(value)
-    item_index = index / @bits_per_item
+    item_index = compute_item_index(index)
     item_bit_size = compute_item_bit_size(item_index)
-    offset = item_bit_size - (index % @bits_per_item) - 1
+    offset = compute_relative_offset(index, item_bit_size)
 
     if bit == 1
       set_bit(item_index, offset)
@@ -107,12 +107,24 @@ class BitArray
     end
   end
 
+  def compute_item_index(index)
+    index / @bits_per_item
+  end
+
+  def compute_relative_offset(index, size)
+    size - (index % @bits_per_item) - 1
+  end
+
   def set_bit(index, offset)
     @internal_array[index] |= 2**offset
   end
 
   def unset_bit(index, offset, size)
     @internal_array[index] &= ((2**size) - 1) - (2**offset)
+  end
+
+  def get_bit(index, offset)
+    (@internal_array[index] >> offset) & 0x1
   end
 
   def increase_items_size(new_size)
