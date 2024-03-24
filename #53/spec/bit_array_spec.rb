@@ -200,4 +200,27 @@ RSpec.describe BitArray do
       expect(bit_array1.to_s).to eq('10010100 10010001 00000101')
     end
   end
+
+  describe '#each_byte' do
+    it 'iterates over each byte of the bit array' do
+      bit_array = BitArray.new([255, 10, 20], bits_per_item: 8)
+
+      index = 0
+      bit_array.each_byte do |byte|
+        case index
+        when 0 then expect(byte).to eq(255)
+        when 1 then expect(byte).to eq(10)
+        when 2 then expect(byte).to eq(20)
+        end
+
+        index += 1
+      end
+    end
+
+    it 'returns an enumerator if no callback is given' do
+      bit_array = BitArray.new([255, 10, 20], bits_per_item: 8)
+
+      expect(bit_array.each_byte).to be_an(Enumerator)
+    end
+  end
 end
