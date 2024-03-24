@@ -17,36 +17,49 @@ class BitArray
 
   def [](index)
     if index.is_a?(Range)
-      parsed_begin = index.begin || 0
-      parsed_end = index.end || @size - 1
-      lower_bound = parsed_begin
-      upper_bound = index.exclude_end? ? parsed_end - 1 : parsed_end
+      bounded_start = index.begin || 0
+      bounded_end = index.end || @size - 1
+      bounded_end = index.exclude_end? ? bounded_end - 1 : bounded_end
 
-      raise RangeError, "lower bound" if lower_bound < 0 || lower_bound >= @size
-      raise RangeError, "upper bound" if upper_bound < 0 || upper_bound >= @size
-
-      return [] if lower_bound > upper_bound
+      raise RangeError if bounded_start < 0 || bounded_start >= @size
+      raise RangeError if bounded_end < 0 || bounded_end >= @size
 
       res = []
-      upper_size = @size < @bits_per_item ? @size : @bits_per_item
-      lower_pow = upper_size - lower_bound
-      upper_pow = upper_bound < upper_size ? upper_size - upper_bound - 1 : 0
-      mask = 2**lower_pow - 2**upper_pow
-      res << (@internal_array[0] & mask)
+      item_index = 0
+      processed_bits = bounded_start
+      left_over_bits = bounded_start % @bits_per_item
+      last_item_bit_size =
+        @size - ((@internal_array.length - 1) * @bits_per_item)
 
-      item_index = 1
-      items_count = (upper_bound / @bits_per_item) + 1
-
-      processed_bound = items_count - 1
-      while item_index < processed_bound
-        res << @internal_array[item_index]
+      while processed_bits <= bounded_end
+        item_bit_size =
+          if item_index == @internal_array.length - 1
+            last_item_bit_size
+          else
+            @bits_per_item
+          end
+        offset = item_bit_size - (bounded_start % @bits_per_item)
+        if item_index == @internal_array.length - 1
+          end_offset = item_bit_size - (bounded_end % @bits_per_item) - 1
+          res << (@internal_array[item_index] >> end_offset)
+        else
+          res << (@internal_array[item_index] & ((2**offset) - 1))
+        end
         item_index += 1
-      end
+        processed_bits += offset + left_over_bits
 
-      if items_count > 1
-        remaining_bits = @size - (@bits_per_item * (items_count - 1))
-        offset = remaining_bits - (upper_bound % remaining_bits) - 1
-        res << (@internal_array[-1] >> offset)
+        if left_over_bits > 0 && item_index < @internal_array.length
+          item_bit_size =
+            if item_index == @internal_array.length - 1
+              last_item_bit_size
+            else
+              @bits_per_item
+            end
+          bits_to_add =
+            @internal_array[item_index] >> (item_bit_size - left_over_bits)
+          res[item_index - 1] <<= left_over_bits
+          res[item_index - 1] |= bits_to_add
+        end
       end
 
       res
