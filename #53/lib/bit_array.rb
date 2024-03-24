@@ -26,7 +26,7 @@ class BitArray
     bit = map_to_bit(value)
     item_index = index / @bits_per_item
     item_bit_size = compute_item_bit_size(item_index)
-    offset = item_bit_size - (index % @bits_per_item) - 1 
+    offset = item_bit_size - (index % @bits_per_item) - 1
 
     if bit == 1
       set_bit(item_index, offset)
