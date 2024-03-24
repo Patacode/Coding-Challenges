@@ -21,7 +21,7 @@ class BitArray
       else
         @bits_per_item
       end
-    offset = item_bit_size - (index % @bits_per_item) - 1 
+    offset = item_bit_size - (index % @bits_per_item) - 1
 
     (@internal_array[item_index] >> offset) & 0x1
   end
