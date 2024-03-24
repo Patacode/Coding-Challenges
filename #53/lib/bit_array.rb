@@ -56,7 +56,7 @@ class BitArray
 
     @internal_array =
       if value > @bits_per_item
-        increase_items_size(@internal_array, value)
+        increase_items_size(@internal_array, value, @bits_per_item)
       else
         decrease_items_size(@internal_array, value, @bits_per_item)
       end
@@ -119,31 +119,31 @@ class BitArray
     (@internal_array[index] >> offset) & 0x1
   end
 
-  def increase_items_size(array, new_size)
+  def increase_items_size(array, new_size, bpi)
     processed_bits = 0
 
     res = array.each_with_object([0]) do |item, acc|
       if processed_bits < new_size
-        acc[-1] <<= @bits_per_item
+        acc[-1] <<= bpi
         acc[-1] |= item
       else
         acc << item
         processed_bits = 0
       end
-      processed_bits += @bits_per_item
+      processed_bits += bpi
 
       acc
     end
 
-    fill_remaining_bits(res, processed_bits, new_size)
+    fill_remaining_bits(res, processed_bits, new_size, bpi)
 
     res
   end
 
-  def fill_remaining_bits(array, processed_bits, new_size)
+  def fill_remaining_bits(array, processed_bits, new_size, bpi)
     while processed_bits < new_size
-      array[-1] <<= @bits_per_item
-      processed_bits += @bits_per_item
+      array[-1] <<= bpi
+      processed_bits += bpi
     end
   end
 
