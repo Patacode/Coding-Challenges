@@ -37,7 +37,7 @@ class BitArray
   end
 
   def each_byte(&proc)
-    res = decrease_items_size(@internal_array, 8)
+    res = decrease_items_size(@internal_array, 8, @bits_per_item)
     proc ? res.each { |byte| proc.call(byte) } : res.each
   end
 
@@ -58,7 +58,7 @@ class BitArray
       if value > @bits_per_item
         increase_items_size(@internal_array, value)
       else
-        decrease_items_size(@internal_array, value)
+        decrease_items_size(@internal_array, value, @bits_per_item)
       end
 
     @bits_per_item = value
@@ -147,15 +147,15 @@ class BitArray
     end
   end
 
-  def decrease_items_size(array, new_size)
+  def decrease_items_size(array, new_size, bpi)
     array.each_with_object([]) do |item, acc|
-      acc.concat(explode_item(item, new_size))
+      acc.concat(explode_item(item, new_size, bpi))
     end
   end
 
-  def explode_item(item, new_size)
+  def explode_item(item, new_size, bpi)
     res = []
-    offset = @bits_per_item
+    offset = bpi
     mask = (2**new_size) - 1
 
     while offset.positive?
