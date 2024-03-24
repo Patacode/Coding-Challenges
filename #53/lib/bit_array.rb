@@ -100,8 +100,10 @@ class BitArray
     @internal_array.clone
   end
 
-  def to_s(base = 2)
-    @internal_array.map { |item| item.to_s(base) }.join(' ')
+  def to_s
+    @internal_array.map do |item|
+      format("%0#{@bits_per_item}d", item.to_s(2))
+    end.join(' ')
   end
 
   private
