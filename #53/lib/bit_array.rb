@@ -12,10 +12,6 @@ class BitArray
     @bits_per_item = bits_per_item
   end
 
-  def to_a
-    @internal_array.clone
-  end
-
   def [](index)
     if index.is_a?(Range)
       bounded_start = index.begin || 0
@@ -98,6 +94,10 @@ class BitArray
     else
       @internal_array[item_index] &= ((2**item_bit_size) - 1) - 2**offset
     end
+  end
+
+  def to_a
+    @internal_array.clone
   end
 
   def to_s(base = 2)
