@@ -37,7 +37,7 @@ class BitArray
   end
 
   def each_byte(&proc)
-    res = @internal_array.reduce([]) do |acc, item|
+    res = @internal_array.each_with_object([]) do |item, acc|
       offset = @bits_per_item
       while offset.positive?
         offset -= 8
@@ -65,7 +65,7 @@ class BitArray
 
     if value > @bits_per_item # increase
       processed_bits = 0
-      @internal_array = @internal_array.reduce([0]) do |acc, item|
+      @internal_array = @internal_array.each_with_object([0]) do |item, acc|
         if processed_bits < value
           acc[-1] <<= @bits_per_item
           acc[-1] |= item
@@ -84,7 +84,7 @@ class BitArray
       end
     else # decrease or nothing
       mask = 2**value - 1
-      @internal_array = @internal_array.reduce([]) do |acc, item|
+      @internal_array = @internal_array.each_with_object([]) do |item, acc|
         offset = @bits_per_item
         while offset.positive?
           offset -= value
