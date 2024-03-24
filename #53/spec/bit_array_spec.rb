@@ -210,8 +210,18 @@ RSpec.describe BitArray do
       bit_array1 = BitArray.new([148, 145, 5].pack('C*'), bits_per_item: 8)
       bit_array2 = BitArray.new([148, 145, 5].pack('C*'), bits_per_item: 16)
 
-      expect(bit_array1.to_s).to eq('10010100 10010001 00000101')
-      expect(bit_array2.to_s).to eq('1001010010010001 0000000000000101')
+      expect(bit_array1.to_s).to eq('10010100 10010001 101')
+      expect(bit_array2.to_s).to eq('1001010010010001 101')
+    end
+
+    it 'returns the correct string representation when base 2..36 are given' do
+      bit_array = BitArray.new([148, 145, 5].pack('C*'), bits_per_item: 8)
+
+      (2..36).each do |base|
+        expected_result = [148, 145, 5].map { |item| item.to_s(base)}.join(' ')
+        p [base, expected_result]
+        expect(bit_array.to_s(base)).to eq(expected_result)
+      end
     end
   end
 end
