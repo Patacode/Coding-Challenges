@@ -130,6 +130,10 @@ class BitArray
       acc
     end
 
+    fill_remaining_bits(processed_bits, new_size)
+  end
+
+  def fill_remaining_bits(processed_bits, new_size)
     while processed_bits < new_size
       @internal_array[-1] <<= @bits_per_item
       processed_bits += @bits_per_item
