@@ -148,10 +148,12 @@ RSpec.describe BitArray do
 
   describe '#at' do
     it 'returns the value of the bit at given index (acts as #[])' do
-      bit_array = BitArray.new([255, 10, 20].pack('C*'))
+      bit_array = BitArray.new([148, 145, 5].pack('C*'), bits_per_item: 8)
 
       expect(bit_array.at(0)).to eq(1)
-      expect(bit_array.at(8)).to eq(0)
+      expect(bit_array.at(8)).to eq(1)
+      expect(bit_array.at(14)).to eq(0)
+      expect(bit_array.at(23)).to eq(1)
     end
 
     it 'raises an IndexError if given index is out of bounds (acts as #[])' do
