@@ -51,9 +51,15 @@ class BitArray
 
       res
     else
-      raise IndexError if index < 0 || index >= size
+      raise IndexError if index < 0 || index >= @size
+
       item_index = index / @bits_per_item
-      item_bit_size = @internal_array[item_index].bit_length
+      item_bit_size =
+        if item_index == @internal_array.length - 1
+          @size - ((@internal_array.length - 1) * @bits_per_item)
+        else
+          @bits_per_item
+        end
       offset = item_bit_size - (index % @bits_per_item) - 1 
 
       (@internal_array[item_index] >> offset) & 0x1
@@ -61,19 +67,18 @@ class BitArray
   end
 
   def []=(index, value)
-    bit =
-      if value.is_a?(Integer)
-        value.zero? ? 0 : 1
-      else
-        value ? 1 : 0
-      end
+    raise IndexError if index < 0 || index >= @size
 
-    return if bit.zero? 
-
+    bit = value ? (value.is_a?(Integer) ? (value.zero? ? 0 : 1) : 1) : 0
     item_index = index / @bits_per_item
-    offset = @bits_per_item - (index % @bits_per_item)
+    item_bit_size = @internal_array[item_index].bit_length
+    offset = item_bit_size - (index % @bits_per_item) - 1 
 
-    @internal_array[item_index] |= (2**offset >> 1)
+    if bit == 1
+      @internal_array[item_index] |= 2**offset
+    else
+      @internal_array[item_index] &= (2**offset) - 1
+    end
   end
 
   private
