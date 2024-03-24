@@ -4,8 +4,7 @@ class BitArray
   attr_reader :size, :bits_per_item
 
   def initialize(initial_data, bits_per_item: 64)
-    raise ArgumentError if bits_per_item < 1 || bits_per_item > 64
-    raise ArgumentError if bits_per_item % 8 != 0
+    raise ArgumentError unless [8, 16, 32, 64].include?(bits_per_item)
 
     @size = init_size(initial_data, bits_per_item)
     @internal_array = init_internal_array(initial_data, @size, bits_per_item)
@@ -69,6 +68,44 @@ class BitArray
     @internal_array.map do |item|
       format("%0#{@bits_per_item}d", item.to_s(2))
     end.join(' ')
+  end
+
+  def bits_per_item=(value)
+    raise ArgumentError unless [8, 16, 32, 64].include?(value)
+
+    if value > @bits_per_item # increase
+      processed_bits = 0
+      @internal_array = @internal_array.reduce([0]) do |acc, item|
+        if processed_bits < value
+          acc[-1] <<= @bits_per_item
+          acc[-1] |= item
+        else
+          acc << item
+          processed_bits = 0
+        end
+        processed_bits += @bits_per_item
+
+        acc
+      end
+
+      while processed_bits < value
+        @internal_array[-1] <<= @bits_per_item
+        processed_bits += @bits_per_item
+      end
+    else # decrease or nothing
+      mask = 2**value - 1
+      @internal_array = @internal_array.reduce([]) do |acc, item|
+        offset = @bits_per_item
+        while offset > 0
+          offset -= value
+          acc << ((item >> offset) & mask)
+        end
+
+        acc
+      end
+    end
+
+    @bits_per_item = value
   end
 
   private
