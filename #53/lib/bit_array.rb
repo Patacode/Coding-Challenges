@@ -63,36 +63,10 @@ class BitArray
   def bits_per_item=(value)
     raise ArgumentError unless [8, 16, 32, 64].include?(value)
 
-    if value > @bits_per_item # increase
-      processed_bits = 0
-      @internal_array = @internal_array.each_with_object([0]) do |item, acc|
-        if processed_bits < value
-          acc[-1] <<= @bits_per_item
-          acc[-1] |= item
-        else
-          acc << item
-          processed_bits = 0
-        end
-        processed_bits += @bits_per_item
-
-        acc
-      end
-
-      while processed_bits < value
-        @internal_array[-1] <<= @bits_per_item
-        processed_bits += @bits_per_item
-      end
-    else # decrease or nothing
-      mask = 2**value - 1
-      @internal_array = @internal_array.each_with_object([]) do |item, acc|
-        offset = @bits_per_item
-        while offset.positive?
-          offset -= value
-          acc << ((item >> offset) & mask)
-        end
-
-        acc
-      end
+    if value > @bits_per_item
+      increase_items_size(value)
+    else
+      decrease_items_size(value)
     end
 
     @bits_per_item = value
@@ -139,6 +113,40 @@ class BitArray
 
   def unset_bit(index, offset, size)
     @internal_array[index] &= ((2**size) - 1) - 2**offset
+  end
+
+  def increase_items_size(new_size)
+    processed_bits = 0
+    @internal_array = @internal_array.each_with_object([0]) do |item, acc|
+      if processed_bits < new_size
+        acc[-1] <<= @bits_per_item
+        acc[-1] |= item
+      else
+        acc << item
+        processed_bits = 0
+      end
+      processed_bits += @bits_per_item
+
+      acc
+    end
+
+    while processed_bits < new_size
+      @internal_array[-1] <<= @bits_per_item
+      processed_bits += @bits_per_item
+    end
+  end
+
+  def decrease_items_size(new_size)
+    mask = 2**new_size - 1
+    @internal_array = @internal_array.each_with_object([]) do |item, acc|
+      offset = @bits_per_item
+      while offset.positive?
+        offset -= new_size
+        acc << ((item >> offset) & mask)
+      end
+
+      acc
+    end
   end
 
   alias at []
