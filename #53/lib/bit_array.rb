@@ -28,8 +28,7 @@ class BitArray
 
   def []=(index, value)
     raise IndexError if index.negative? || index >= @size
-
-    bit = value ? (value.is_a?(Integer) ? (value.zero? ? 0 : 1) : 1) : 0
+    bit = map_to_bit(value)
     item_index = index / @bits_per_item
     item_bit_size =
       if item_index == @internal_array.length - 1
@@ -121,6 +120,18 @@ class BitArray
   def init_internal_array(initial_data, size, bits_per_item)
     res = [0] * (size / bits_per_item.to_f).ceil
     initial_data.is_a?(Array) ? initial_data.clone : res
+  end
+
+  def map_to_bit(value)
+    if value
+      if value.is_a?(Integer)
+        value.zero? ? 0 : 1
+      else
+        1
+      end
+    else
+      0
+    end
   end
 
   alias at []
