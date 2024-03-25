@@ -18,7 +18,7 @@ class BitArray
     item_bit_size = compute_item_bit_size(item_index)
     offset = compute_relative_offset(index, item_bit_size)
 
-    get_bit(item_index, offset)
+    get_bit(@internal_array[item_index], offset)
   end
 
   def []=(index, value)
@@ -30,9 +30,13 @@ class BitArray
     offset = compute_relative_offset(index, item_bit_size)
 
     if bit == 1
-      set_bit(item_index, offset)
+      @internal_array[item_index] = set_bit(@internal_array[item_index], offset)
     else
-      unset_bit(item_index, offset, item_bit_size)
+      @internal_array[item_index] = unset_bit(
+        @internal_array[item_index],
+        offset,
+        item_bit_size
+      )
     end
   end
 
@@ -107,16 +111,16 @@ class BitArray
     size - (index % @bits_per_item) - 1
   end
 
-  def set_bit(index, offset)
-    @internal_array[index] |= 2**offset
+  def set_bit(value, offset)
+    value | (2**offset)
   end
 
-  def unset_bit(index, offset, size)
-    @internal_array[index] &= ((2**size) - 1) - (2**offset)
+  def unset_bit(value, offset, size)
+    value & (((2**size) - 1) - (2**offset))
   end
 
-  def get_bit(index, offset)
-    (@internal_array[index] >> offset) & 0x1
+  def get_bit(value, offset)
+    (value >> offset) & 0x1
   end
 
   def append_bits(value, offset, bits)
