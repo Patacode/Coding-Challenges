@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-require 'bit_array'
+require 'bitary'
 require 'hasher'
 
 class BloomFilter
+  include Bitary
+
   attr_reader :size, :hash_function_count, :version
 
   def initialize(
