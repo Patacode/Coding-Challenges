@@ -4,8 +4,6 @@ require 'bitary'
 require 'hasher'
 
 class BloomFilter
-  include Bitary
-
   attr_reader :size, :hash_function_count, :version
 
   def initialize(
@@ -18,7 +16,7 @@ class BloomFilter
     @size = data[2] || required_bit_qty(element_count, epsilon)
     @hash_function_count =
       data[1] || optimal_hash_function_qty(@size, element_count)
-    @bit_array = BitArray.new(data[3] || @size, bits_per_item: 8)
+    @bit_array = Bitary.new(data[3] || @size, bits_per_item: 8)
     @version = data[0] || version
 
     @bit_array.bits_per_item = 64
