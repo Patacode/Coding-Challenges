@@ -29,15 +29,16 @@ class BitArray
     item_bit_size = compute_item_bit_size(item_index)
     offset = compute_relative_offset(index, item_bit_size)
 
-    if bit == 1
-      @internal_array[item_index] = set_bit(@internal_array[item_index], offset)
-    else
-      @internal_array[item_index] = unset_bit(
-        @internal_array[item_index],
-        offset,
-        item_bit_size
-      )
-    end
+    @internal_array[item_index] =
+      if bit == 1
+        set_bit(@internal_array[item_index], offset)
+      else
+        unset_bit(
+          @internal_array[item_index],
+          offset,
+          item_bit_size
+        )
+      end
   end
 
   def each_byte(&proc)
