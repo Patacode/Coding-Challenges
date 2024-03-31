@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
-    bitary (0.1.5)
+    bitary (0.1.6)
     diff-lcs (1.5.1)
     json (2.7.1)
     language_server-protocol (3.17.0.3)
@@ -48,7 +48,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  bitary (~> 0.1.5)
+  bitary (~> 0.1.6)
   rspec (~> 3.13)
   rubocop (~> 1.62, >= 1.62.1)
 
