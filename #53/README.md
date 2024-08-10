@@ -2,6 +2,14 @@
 
 Check words spelling through **Bloom Filter**.
 
+## Installation
+
+```bash
+bundle install # install dependencies
+bundle exec rubocop # execute linter
+bundle exec rspec # run unit tests
+```
+
 ## Usage
 
 The spelling checker is invoked through `ccspellcheck`:
