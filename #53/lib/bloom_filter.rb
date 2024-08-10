@@ -16,7 +16,12 @@ class BloomFilter
     @size = data[2] || required_bit_qty(element_count, epsilon)
     @hash_function_count =
       data[1] || optimal_hash_function_qty(@size, element_count)
-    @bit_array = Bitary.new(data[3] || @size)
+    @bit_array =
+      if data[3]
+        Bitary.new(bytes: data[3])
+      else
+        Bitary.new(@size)
+      end
     @version = data[0] || version
   end
 
