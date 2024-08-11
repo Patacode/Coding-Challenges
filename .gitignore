@@ -1,5 +1,59 @@
-# Created by https://www.toptal.com/developers/gitignore/api/ruby,visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=ruby,visualstudiocode
+# Created by https://www.toptal.com/developers/gitignore/api/ruby,visualstudiocode,c
+# Edit at https://www.toptal.com/developers/gitignore?templates=ruby,visualstudiocode,c
+
+### C ###
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
 
 ### Ruby ###
 *.gem
@@ -77,8 +131,9 @@ build-iPhoneSimulator/
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/ruby,visualstudiocode
+# End of https://www.toptal.com/developers/gitignore/api/ruby,visualstudiocode,c
 
 .aliases
 *.bf
 !*/data/*.bf
+\#1/ccwc
