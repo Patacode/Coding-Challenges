@@ -1,5 +1,11 @@
 {
   "editor.quickSuggestions": {
     "other": "off"
+  },
+  "files.associations": {
+    "*.page-template": "vue",
+    "*.layout-template": "vue",
+    "*.vue": "vue",
+    "limits": "c"
   }
 }
