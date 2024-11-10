@@ -1,6 +1,9 @@
 # CC WC
 
-Simple implementation of the **wc** Unix command line tool.
+Simplified clone of the **wc** Unix command line tool.
+
+- man wc
+- info '(coreutils) wc invocation'
 
 ## Installation
 
