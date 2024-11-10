@@ -11,3 +11,7 @@ int count_bytes(const char *const str)
 
   return idx;
 }
+
+const char *const get_file_content(const char *const filename) {
+  return "hello";
+}

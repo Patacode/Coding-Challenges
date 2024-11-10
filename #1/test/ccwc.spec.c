@@ -5,7 +5,7 @@ void setUp(void) {}
 void tearDown(void) {}
 
 /**
- * Test scenarios:
+ * Test scenarios(count_bytes(str)):
  * - one line containing ASCII characters only
  * - two lines containing ASCII characters only
  * - one line containing ASCII and non-ASCII characters
@@ -37,11 +37,27 @@ void test_byte_count_one_line_with_non_ascii(void)
 	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
 }
 
+/**
+ * Test scenarios(get_file_content(filename)):
+ * - one line containing ASCII characters only
+ * - two lines containing ASCII characters only
+ * - one line containing ASCII and non-ASCII characters
+ */
+void test_file_content_retrieval_one_line(void) {
+	const char *const filename = "data/ascii_one_line.txt";
+	const char *const actual_file_content = get_file_content(filename);
+	const char *const expected_file_content = "hello";
+
+
+	TEST_ASSERT_EQUAL_STRING(expected_file_content, actual_file_content);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
 	RUN_TEST(test_byte_count_one_line);
 	RUN_TEST(test_byte_count_two_lines);
 	RUN_TEST(test_byte_count_one_line_with_non_ascii);
+	RUN_TEST(test_file_content_retrieval_one_line);
 	return UNITY_END();
 }
