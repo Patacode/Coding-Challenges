@@ -52,6 +52,8 @@ void test_byte_count_one_line_with_non_ascii(void)
  * - one line containing ASCII characters only
  * - two lines containing ASCII characters only
  * - one line containing ASCII and non-ASCII characters
+ * - one line containing ASCII characters and newline char at the end
+ * - inexistent file
  */
 void test_file_content_retrieval_one_line(void) {
 	const char *const filename = "data/ascii_one_line.txt";
@@ -73,13 +75,50 @@ void test_file_content_retrieval_two_lines(void) {
 	TEST_ASSERT_EQUAL_STRING(expected_file_content, actual_file_content);
 }
 
+void test_file_content_retrieval_one_line_non_ascii(void) {
+	const char *const filename = "data/ascii_one_line_non_ascii.txt";
+	char* actual_file_content = get_file_content(filename);
+	const char *const expected_file_content = "hello 😀";
+
+	dynamic_content = actual_file_content;
+
+	TEST_ASSERT_EQUAL_STRING(expected_file_content, actual_file_content);
+}
+
+void test_file_content_retrieval_one_line_with_newline(void) {
+	const char *const filename = "data/ascii_one_line_with_newline.txt";
+	char* actual_file_content = get_file_content(filename);
+	const char *const expected_file_content = "hello\n";
+
+	dynamic_content = actual_file_content;
+
+	TEST_ASSERT_EQUAL_STRING(expected_file_content, actual_file_content);
+}
+
+void test_file_content_retrieval_unknown_file(void) {
+	const char *const filename = "data/unknown.txt";
+	char* actual_file_content = get_file_content(filename);
+
+	dynamic_content = actual_file_content;
+
+	TEST_ASSERT_NULL(actual_file_content);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
+
+	// count_bytes(str)
 	RUN_TEST(test_byte_count_one_line);
 	RUN_TEST(test_byte_count_two_lines);
 	RUN_TEST(test_byte_count_one_line_with_non_ascii);
+
+	// get_file_content(filename)
 	RUN_TEST(test_file_content_retrieval_one_line);
 	RUN_TEST(test_file_content_retrieval_two_lines);
+	RUN_TEST(test_file_content_retrieval_one_line_non_ascii);
+	RUN_TEST(test_file_content_retrieval_one_line_with_newline);
+	RUN_TEST(test_file_content_retrieval_unknown_file);
+
 	return UNITY_END();
 }

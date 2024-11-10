@@ -15,7 +15,7 @@ int count_bytes(const char *const str)
 }
 
 char* get_file_content(const char *const filename) {
-  FILE *file = fopen(filename, "rb"); // Open the file in binary read mode
+  FILE* file = fopen(filename, "rb"); // Open the file in binary read mode
   if(file == NULL) {
     perror("Error opening file");
     return NULL;
