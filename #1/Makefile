@@ -20,7 +20,7 @@ TARGET_TEST = ccwc.test
 all: $(TARGET_TEST)
 
 $(TARGET_TEST): $(TEST_SRC) $(SRC) $(UNITY_SRC)
-	gcc $(CFLAGS_TEST) -o $(TARGET_TEST) $(UNITY_SRC) $(TEST_SRC) $(SRC)
+	gcc -fprofile-arcs -ftest-coverage $(CFLAGS_TEST) -o $(TARGET_TEST) $(UNITY_SRC) $(TEST_SRC) $(SRC)
 
 $(TARGET_SRC): $(MAIN) $(SRC)
 	gcc $(CFLAGS_SRC) -o $(TARGET_SRC) $(SRC) $(MAIN)
@@ -34,5 +34,11 @@ run: $(TARGET_SRC)
 test: $(TARGET_TEST)
 	./$(TARGET_TEST)
 
+report: $(TARGET_TEST)
+	lcov --capture --directory . --output-file coverage.info
+	genhtml coverage.info --output-directory out
+	firefox out/index.html
+
 clean:
-	rm -f $(TARGET_TEST)
+	rm -f *.gcda *.gcno
+	rm -f $(TARGET_TEST) $(TARGET_SRC)

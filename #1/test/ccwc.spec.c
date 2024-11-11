@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <locale.h>
 
 #include "unity.h"
 #include "ccwc.h"
@@ -185,6 +186,53 @@ void test_newline_count_one_line_with_newline(void)
 }
 
 /**
+ * Test scenarios(is_printable_word(word))
+ * - word containing printable ascii chars
+ * - word containing printable ascii and non-ascii chars
+ * - word containing non-printable chars
+ * - word containing printable and non-printable chars
+ * - word containing chars not in charset
+ */
+void test_word_printability_ascii_only(void) {
+	const char *const word = "Hello";
+	const bool actual_result = is_printable_word(word);
+
+	TEST_ASSERT_TRUE(actual_result);
+}
+
+void test_word_printability_utf(void) {
+	setlocale(LC_CTYPE, "fr_BE.UTF8");
+
+	const char *const word = "Hello😀";
+	const bool actual_result = is_printable_word(word);
+
+	TEST_ASSERT_TRUE(actual_result);
+}
+
+void test_word_printability_non_printables(void) {
+	const char *const word = "\001\002";
+	const bool actual_result = is_printable_word(word);
+
+	TEST_ASSERT_FALSE(actual_result);
+}
+
+void test_word_printability_non_printables_and_printables(void) {
+	const char *const word = "Hello\001\002";
+	const bool actual_result = is_printable_word(word);
+
+	TEST_ASSERT_FALSE(actual_result);
+}
+
+void test_word_printability_chars_not_in_charset(void) {
+	setlocale(LC_CTYPE, "POSIX");
+
+	const char *const word = "Hello😀";
+	const bool actual_result = is_printable_word(word);
+
+	TEST_ASSERT_FALSE(actual_result);
+}
+
+/**
  * Test scenarios(count_words(str))
  * - one line with no whitespace
  * - one line with withespaces
@@ -195,6 +243,8 @@ void test_newline_count_one_line_with_newline(void)
  * - one line with whitespaces and non-printable chars
  * - two lines with no whitespace
  * - two lines with whitespaces
+ * - one line with utf chars
+ * - one line with chars not in charset
  */
 void test_word_count_one_line_with_no_whitespace(void) {
 	const char *const str = "Hello";
@@ -268,6 +318,26 @@ void test_word_count_two_lines_with_whitespaces(void) {
 	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
 }
 
+void test_word_count_one_line_utf_chars(void) {
+	setlocale(LC_CTYPE, "fr_BE.UTF8");
+
+	const char *const str = "Hello 😀 friend";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 3;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_one_line_with_chars_not_in_charset(void) {
+	setlocale(LC_CTYPE, "POSIX");
+
+	const char *const str = "Hello 😀 friend";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 2;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -296,6 +366,13 @@ int main(void)
 	RUN_TEST(test_newline_count_two_lines_with_one_newline);
 	RUN_TEST(test_newline_count_one_line_with_newline);
 
+	// is_printable_word(word)
+	RUN_TEST(test_word_printability_ascii_only);
+	RUN_TEST(test_word_printability_utf);
+	RUN_TEST(test_word_printability_non_printables);
+	RUN_TEST(test_word_printability_non_printables_and_printables);
+	RUN_TEST(test_word_printability_chars_not_in_charset);
+
 	// count_words(str)
 	RUN_TEST(test_word_count_one_line_with_no_whitespace);
 	RUN_TEST(test_word_count_one_line_with_whitespaces);
@@ -306,6 +383,8 @@ int main(void)
 	RUN_TEST(test_word_count_one_line_with_non_printable_chars);
 	RUN_TEST(test_word_count_two_lines_without_whitespace);
 	RUN_TEST(test_word_count_two_lines_with_whitespaces);
+	RUN_TEST(test_word_count_one_line_utf_chars);
+	RUN_TEST(test_word_count_one_line_with_chars_not_in_charset);
 
 	return UNITY_END();
 }

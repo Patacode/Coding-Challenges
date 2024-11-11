@@ -1,3 +1,7 @@
 .vscode
 ccwc
 ccwc.test
+out/
+*.gcda
+*.gcno
+coverage.info

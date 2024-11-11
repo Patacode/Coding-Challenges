@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <wchar.h>
+#include <wctype.h>
+#include <string.h>
 
 #include "ccwc.h"
 
@@ -64,14 +67,38 @@ int count_newlines(const char *const str) {
   return counter;
 }
 
+bool is_printable_word(const char *const word) {
+  const char *ptr = word;
+  wchar_t wc;
+  size_t len;
+
+  while(*ptr != '\0') {
+    len = mbrtowc(&wc, ptr, MB_CUR_MAX, NULL);
+
+    if(len == (size_t) - 1 || len == (size_t) - 2 || !iswprint(wc)) {
+      return false;
+    }
+
+    ptr += len;
+  }
+
+  return true;
+}
+
 int count_words(const char *const str) {
   int idx = 0;
   int counter = 0;
   while(str[idx] != '\0') {
-    if(!isspace(str[idx]) && isprint(str[idx])) {
+    if(!isspace(str[idx])) {
       int jdx = idx;
-      while(str[jdx] != '\0' && !isspace(str[jdx]) && isprint(str[jdx])) jdx++;
-      if(jdx - idx > 0) counter++;
+      while(str[jdx] != '\0' && !isspace(str[jdx])) jdx++;
+      const int word_size = jdx - idx;
+      if(word_size > 0) {
+        char current_word[word_size + 1];
+        strncpy(current_word, str + idx, word_size);
+        current_word[word_size] = '\0';
+        if(is_printable_word(current_word)) counter++;
+      }
       idx = jdx - 1;
     }
     idx++;

@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 /**
  * Counts the number of bytes contained in the given string.
  * 
@@ -50,3 +52,11 @@ char* get_file_content(const char *const filename);
  * @return the number of bytes contained in the pointed file.
  */
 int count_bytes_in_file(const char *const filename);
+
+/**
+ * Checks if given word is printable as per current locale.
+ * 
+ * @param word the word to be checked
+ * @return true if given word is printable, false otherwise. 
+ */
+bool is_printable_word(const char *const word);
