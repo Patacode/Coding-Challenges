@@ -10,7 +10,6 @@ void setUp(void) {
 }
 
 void tearDown(void) {
-	printf("Freeing up memory...\n%s\n", dynamic_content);
 	free(dynamic_content);
 }
 
@@ -120,6 +119,38 @@ void test_byte_count_in_file_one_line(void) {
 	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
 }
 
+void test_byte_count_in_file_two_lines(void) {
+	const char *const filename = "data/ascii_two_lines.txt";
+	const int actual_byte_count = count_bytes_in_file(filename);
+	const int expected_byte_count = 12;
+
+	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+}
+
+void test_byte_count_in_file_one_line_with_non_ascii(void) {
+	const char *const filename = "data/ascii_one_line_non_ascii.txt";
+	const int actual_byte_count = count_bytes_in_file(filename);
+	const int expected_byte_count = 10;
+
+	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+}
+
+void test_byte_count_in_file_one_line_with_newline(void) {
+	const char *const filename = "data/ascii_one_line_with_newline.txt";
+	const int actual_byte_count = count_bytes_in_file(filename);
+	const int expected_byte_count = 6;
+
+	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+}
+
+void test_byte_count_in_file_one_line_unknown_file(void) {
+	const char *const filename = "data/unknown.txt";
+	const int actual_byte_count = count_bytes_in_file(filename);
+	const int expected_byte_count = -1;
+
+	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -138,6 +169,10 @@ int main(void)
 
 	// count_bytes_in_file(filename)
 	RUN_TEST(test_byte_count_in_file_one_line);
+	RUN_TEST(test_byte_count_in_file_two_lines);
+	RUN_TEST(test_byte_count_in_file_one_line_with_non_ascii);
+	RUN_TEST(test_byte_count_in_file_one_line_with_newline);
+	RUN_TEST(test_byte_count_in_file_one_line_unknown_file);
 
 	return UNITY_END();
 }

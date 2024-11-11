@@ -39,5 +39,15 @@ char* get_file_content(const char *const filename) {
 }
 
 int count_bytes_in_file(const char *const filename) {
-  return 5;
+  FILE* file = fopen(filename, "rb"); // Open the file in binary read mode
+  if(file == NULL) {
+    perror("Error opening file");
+    return -1;
+  }
+
+  fseek(file, 0, SEEK_END);
+  long file_size = ftell(file);
+  fclose(file);
+
+  return file_size;
 }
