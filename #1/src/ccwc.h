@@ -19,3 +19,11 @@ int count_bytes(const char *const str);
  * @return the content of the pointed file.  
  */
 char* get_file_content(const char *const filename);
+
+/**
+ * Counts the number of bytes contained in the pointed file.
+ * 
+ * @param filename the name of the file to be processed
+ * @return the number of bytes contained in the pointed file.
+ */
+int count_bytes_in_file(const char *const filename);

@@ -104,6 +104,22 @@ void test_file_content_retrieval_unknown_file(void) {
 	TEST_ASSERT_NULL(actual_file_content);
 }
 
+/**
+ * Test scenarios(count_bytes_in_file(filename)):
+ * - one line containing ASCII characters only
+ * - two lines containing ASCII characters only
+ * - one line containing ASCII and non-ASCII characters
+ * - one line containing ASCII characters and newline char at the end
+ * - inexistent file
+ */
+void test_byte_count_in_file_one_line(void) {
+	const char *const filename = "data/ascii_one_line.txt";
+	const int actual_byte_count = count_bytes_in_file(filename);
+	const int expected_byte_count = 5;
+
+	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -119,6 +135,9 @@ int main(void)
 	RUN_TEST(test_file_content_retrieval_one_line_non_ascii);
 	RUN_TEST(test_file_content_retrieval_one_line_with_newline);
 	RUN_TEST(test_file_content_retrieval_unknown_file);
+
+	// count_bytes_in_file(filename)
+	RUN_TEST(test_byte_count_in_file_one_line);
 
 	return UNITY_END();
 }
