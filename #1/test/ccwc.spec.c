@@ -191,7 +191,8 @@ void test_newline_count_one_line_with_newline(void)
  * - word containing printable ascii and non-ascii chars
  * - word containing non-printable chars
  * - word containing printable and non-printable chars
- * - word containing chars not in charset
+ * - word containing chars not in charset and in charset
+ * - word containing chars not in charset only
  */
 void test_word_printability_ascii_only(void) {
 	const char *const word = "Hello";
@@ -220,13 +221,22 @@ void test_word_printability_non_printables_and_printables(void) {
 	const char *const word = "Hello\001\002";
 	const bool actual_result = is_printable_word(word);
 
-	TEST_ASSERT_FALSE(actual_result);
+	TEST_ASSERT_TRUE(actual_result);
+}
+
+void test_word_printability_chars_not_in_charset_and_in_charset(void) {
+	setlocale(LC_CTYPE, "POSIX");
+
+	const char *const word = "Hello😀ss";
+	const bool actual_result = is_printable_word(word);
+
+	TEST_ASSERT_TRUE(actual_result);
 }
 
 void test_word_printability_chars_not_in_charset(void) {
 	setlocale(LC_CTYPE, "POSIX");
 
-	const char *const word = "Hello😀";
+	const char *const word = "™😀";
 	const bool actual_result = is_printable_word(word);
 
 	TEST_ASSERT_FALSE(actual_result);
@@ -371,6 +381,7 @@ int main(void)
 	RUN_TEST(test_word_printability_utf);
 	RUN_TEST(test_word_printability_non_printables);
 	RUN_TEST(test_word_printability_non_printables_and_printables);
+	RUN_TEST(test_word_printability_chars_not_in_charset_and_in_charset);
 	RUN_TEST(test_word_printability_chars_not_in_charset);
 
 	// count_words(str)

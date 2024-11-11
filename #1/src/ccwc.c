@@ -68,21 +68,17 @@ int count_newlines(const char *const str) {
 }
 
 bool is_printable_word(const char *const word) {
-  const char *ptr = word;
+  int idx = 0;
   wchar_t wc;
   size_t len;
 
-  while(*ptr != '\0') {
-    len = mbrtowc(&wc, ptr, MB_CUR_MAX, NULL);
-
-    if(len == (size_t) - 1 || len == (size_t) - 2 || !iswprint(wc)) {
-      return false;
-    }
-
-    ptr += len;
+  while(word[idx] != '\0') {
+    len = mbrtowc(&wc, word + idx, MB_CUR_MAX, NULL);
+    if(len != (size_t) - 1 && len != (size_t) - 2 && iswprint(wc)) return true;
+    idx++;
   }
 
-  return true;
+  return false;
 }
 
 int count_words(const char *const str) {
