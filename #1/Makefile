@@ -7,6 +7,7 @@ TEST_DIR = test
 TEST_SRC = $(TEST_DIR)/ccwc.spec.c
 SRC = $(SRC_DIR)/ccwc.c
 UNITY_SRC = $(UNITY_DIR)/unity.c
+MAIN = $(SRC_DIR)/main.c
 
 # Compiler flags
 CFLAGS_SRC = -I $(SRC_DIR)
@@ -21,8 +22,11 @@ all: $(TARGET_TEST)
 $(TARGET_TEST): $(TEST_SRC) $(SRC) $(UNITY_SRC)
 	gcc $(CFLAGS_TEST) -o $(TARGET_TEST) $(UNITY_SRC) $(TEST_SRC) $(SRC)
 
-build: $(SRC)
-	gcc $(CFLAGS_SRC) -o $(TARGET_SRC) $(SRC)
+$(TARGET_SRC): $(MAIN) $(SRC)
+	gcc $(CFLAGS_SRC) -o $(TARGET_SRC) $(SRC) $(MAIN)
+
+run: $(TARGET_SRC)
+	./$(TARGET_SRC) $(ARGS)
 
 test: $(TARGET_TEST)
 	./$(TARGET_TEST)
