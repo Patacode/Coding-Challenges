@@ -1,5 +1,6 @@
 #include <argp.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "ccwc.h"
 
@@ -10,11 +11,13 @@ static char args_doc[] = "FILENAME";
 
 static struct argp_option options[] = {
   {"bytes", 'c', 0, 0, "print the byte counts"},
+  {"lines", 'l', 0, 0, "print the newline counts"},
   { 0 }
 };
 
 typedef struct {
   bool count_bytes;
+  bool count_lines;
   char* filename;
 } Arguments;
 
@@ -22,6 +25,7 @@ static error_t parse_opt(int key, char* arg, struct argp_state *state) {
   Arguments* arguments = state -> input;
   switch (key) {
     case 'c': arguments -> count_bytes = true; break;
+    case 'l': arguments -> count_lines = true; break;
     case ARGP_KEY_ARG:
       if(state -> arg_num == 0) {
         arguments -> filename = arg;
@@ -45,8 +49,17 @@ int main(int argc, char **argv) {
   Arguments arguments;
   arguments.filename = NULL;
   arguments.count_bytes = false;
+  arguments.count_lines = false;
 
   argp_parse(&argp, argc, argv, 0, 0, &arguments);
+
+  if(arguments.count_lines) {
+    char* file_content = get_file_content(arguments.filename);
+    const int newline_count = count_newlines(file_content);
+
+    printf("%d %s\n", newline_count, arguments.filename);
+    free(file_content);
+  }
 
   if(arguments.count_bytes) {
     const int byte_count = count_bytes_in_file(arguments.filename);
