@@ -8,7 +8,7 @@ Simplified clone of the **wc** Unix command line tool.
 ## Installation
 
 ```bash
-gcc ccwc.c -o ccwc
+make build
 ```
 
 ## Usage

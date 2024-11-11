@@ -25,6 +25,9 @@ $(TARGET_TEST): $(TEST_SRC) $(SRC) $(UNITY_SRC)
 $(TARGET_SRC): $(MAIN) $(SRC)
 	gcc $(CFLAGS_SRC) -o $(TARGET_SRC) $(SRC) $(MAIN)
 
+build: $(TARGET_SRC)
+	@echo "Successfully compiled"
+
 run: $(TARGET_SRC)
 	./$(TARGET_SRC) $(ARGS)
 
