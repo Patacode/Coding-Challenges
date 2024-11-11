@@ -56,6 +56,8 @@ int count_bytes_in_file(const char *const filename);
 /**
  * Checks if given word is printable as per current locale.
  * 
+ * - Partially printable words are considered printable.
+ * 
  * @param word the word to be checked
  * @return true if given word is printable, false otherwise. 
  */
