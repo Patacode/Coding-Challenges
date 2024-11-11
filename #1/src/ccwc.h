@@ -18,6 +18,18 @@ int count_bytes(const char *const str);
  */
 int count_newlines(const char *const str);
 
+/**
+ * Counts the number of words contained in the given string.
+ * 
+ * - Given string must be NULL-terminated.
+ * 
+ * - A word is a non-zero-length sequence of printable characters
+ * delimited by white space.
+ * 
+ * @param str the string to be processed
+ * @return the number of words contained in the given string.
+ */
+int count_words(const char *const str);
 
 /**
  * Reads all the character contained in the pointed file.

@@ -184,6 +184,90 @@ void test_newline_count_one_line_with_newline(void)
 	TEST_ASSERT_EQUAL_INT(expected_newline_count, actual_newline_count);
 }
 
+/**
+ * Test scenarios(count_words(str))
+ * - one line with no whitespace
+ * - one line with withespaces
+ * - one line with withespaces and newline
+ * - one line with consecutive withespaces
+ * - one line with tabs
+ * - one line with one letter words
+ * - one line with whitespaces and non-printable chars
+ * - two lines with no whitespace
+ * - two lines with whitespaces
+ */
+void test_word_count_one_line_with_no_whitespace(void) {
+	const char *const str = "Hello";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 1;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_one_line_with_whitespaces(void) {
+	const char *const str = "Hello friend of mine";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 4;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_one_line_with_whitespaces_and_newline(void) {
+	const char *const str = "Hello friend of mine\n";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 4;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_one_line_with_consecutive_whitespaces(void) {
+	const char *const str = "Hello   friend   of  mine ";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 4;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_one_line_with_tabs(void) {
+	const char *const str = "Hello\t friend \t  \tof  mine ";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 4;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_one_line_with_one_letter_words(void) {
+	const char *const str = "a  b c\t d \te\tf \t g\t \n";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 7;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_one_line_with_non_printable_chars(void) {
+	const char *const str = "Hello \001\002 max";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 2;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_two_lines_without_whitespace(void) {
+	const char *const str = "Hello\nfriend";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 2;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
+void test_word_count_two_lines_with_whitespaces(void) {
+	const char *const str = "Hello \n  friend of mine";
+	const int actual_word_count = count_words(str);
+	const int expected_word_count = 4;
+
+	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -211,6 +295,17 @@ int main(void)
 	RUN_TEST(test_newline_count_one_line_without_newline);
 	RUN_TEST(test_newline_count_two_lines_with_one_newline);
 	RUN_TEST(test_newline_count_one_line_with_newline);
+
+	// count_words(str)
+	RUN_TEST(test_word_count_one_line_with_no_whitespace);
+	RUN_TEST(test_word_count_one_line_with_whitespaces);
+	RUN_TEST(test_word_count_one_line_with_whitespaces_and_newline);
+	RUN_TEST(test_word_count_one_line_with_consecutive_whitespaces);
+	RUN_TEST(test_word_count_one_line_with_tabs);
+	RUN_TEST(test_word_count_one_line_with_one_letter_words);
+	RUN_TEST(test_word_count_one_line_with_non_printable_chars);
+	RUN_TEST(test_word_count_two_lines_without_whitespace);
+	RUN_TEST(test_word_count_two_lines_with_whitespaces);
 
 	return UNITY_END();
 }

@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "ccwc.h"
 
@@ -57,6 +58,22 @@ int count_newlines(const char *const str) {
   int counter = 0;
   while(str[idx] != '\0') {
     if(str[idx] == '\n') counter++;
+    idx++;
+  }
+
+  return counter;
+}
+
+int count_words(const char *const str) {
+  int idx = 0;
+  int counter = 0;
+  while(str[idx] != '\0') {
+    if(!isspace(str[idx]) && isprint(str[idx])) {
+      int jdx = idx;
+      while(str[jdx] != '\0' && !isspace(str[jdx]) && isprint(str[jdx])) jdx++;
+      if(jdx - idx > 0) counter++;
+      idx = jdx - 1;
+    }
     idx++;
   }
 
