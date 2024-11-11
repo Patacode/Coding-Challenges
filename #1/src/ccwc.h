@@ -9,6 +9,17 @@
 int count_bytes(const char *const str);
 
 /**
+ * Counts the number of newlines contained in the given string.
+ * 
+ * - Given string must be NULL-terminated.
+ * 
+ * @param str the string to be processed
+ * @return the number of newlines contained in the given string.
+ */
+int count_newlines(const char *const str);
+
+
+/**
  * Reads all the character contained in the pointed file.
  * 
  * - The returned char pointer is referring to a dynamically allocated

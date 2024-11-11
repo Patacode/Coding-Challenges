@@ -51,3 +51,14 @@ int count_bytes_in_file(const char *const filename) {
 
   return file_size;
 }
+
+int count_newlines(const char *const str) {
+  int idx = 0;
+  int counter = 0;
+  while(str[idx] != '\0') {
+    if(str[idx] == '\n') counter++;
+    idx++;
+  }
+
+  return counter;
+}

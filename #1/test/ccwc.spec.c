@@ -151,6 +151,39 @@ void test_byte_count_in_file_one_line_unknown_file(void) {
 	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
 }
 
+/**
+ * Test scenarios(count_newlines(str)):
+ * - one line with no newline
+ * - two lines with one newline
+ * - one line with newline
+ */
+void test_newline_count_one_line_without_newline(void)
+{
+	const char *const str = "Hello, World";
+	const int actual_newline_count = count_newlines(str);
+	const int expected_newline_count = 0;
+
+	TEST_ASSERT_EQUAL_INT(expected_newline_count, actual_newline_count);
+}
+
+void test_newline_count_two_lines_with_one_newline(void)
+{
+	const char *const str = "Hello, World\nMy friend !";
+	const int actual_newline_count = count_newlines(str);
+	const int expected_newline_count = 1;
+
+	TEST_ASSERT_EQUAL_INT(expected_newline_count, actual_newline_count);
+}
+
+void test_newline_count_one_line_with_newline(void)
+{
+	const char *const str = "Hello, World 😀 !\n";
+	const int actual_newline_count = count_newlines(str);
+	const int expected_newline_count = 1;
+
+	TEST_ASSERT_EQUAL_INT(expected_newline_count, actual_newline_count);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -173,6 +206,11 @@ int main(void)
 	RUN_TEST(test_byte_count_in_file_one_line_with_non_ascii);
 	RUN_TEST(test_byte_count_in_file_one_line_with_newline);
 	RUN_TEST(test_byte_count_in_file_one_line_unknown_file);
+
+	// count_newlines(str)
+	RUN_TEST(test_newline_count_one_line_without_newline);
+	RUN_TEST(test_newline_count_two_lines_with_one_newline);
+	RUN_TEST(test_newline_count_one_line_with_newline);
 
 	return UNITY_END();
 }
