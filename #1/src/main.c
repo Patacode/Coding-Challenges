@@ -1,6 +1,7 @@
 #include <argp.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <locale.h>
 
 #include "ccwc.h"
 
@@ -12,12 +13,14 @@ static char args_doc[] = "FILENAME";
 static struct argp_option options[] = {
   {"bytes", 'c', 0, 0, "print the byte counts"},
   {"lines", 'l', 0, 0, "print the newline counts"},
+  {"words", 'w', 0, 0, "print the word counts"},
   { 0 }
 };
 
 typedef struct {
   bool count_bytes;
   bool count_lines;
+  bool count_words;
   char* filename;
 } Arguments;
 
@@ -26,6 +29,7 @@ static error_t parse_opt(int key, char* arg, struct argp_state *state) {
   switch (key) {
     case 'c': arguments -> count_bytes = true; break;
     case 'l': arguments -> count_lines = true; break;
+    case 'w': arguments -> count_words = true; break;
     case ARGP_KEY_ARG:
       if(state -> arg_num == 0) {
         arguments -> filename = arg;
@@ -46,6 +50,8 @@ static error_t parse_opt(int key, char* arg, struct argp_state *state) {
 static struct argp argp = { options, parse_opt, args_doc, doc };
 
 int main(int argc, char **argv) {
+  setlocale(LC_CTYPE, "");
+
   Arguments arguments;
   arguments.filename = NULL;
   arguments.count_bytes = false;
@@ -55,9 +61,25 @@ int main(int argc, char **argv) {
 
   if(arguments.count_lines) {
     char* file_content = get_file_content(arguments.filename);
+    if(file_content == NULL) {
+      return 1;
+    }
+
     const int newline_count = count_newlines(file_content);
 
     printf("%d %s\n", newline_count, arguments.filename);
+    free(file_content);
+  }
+
+  if(arguments.count_words) {
+    char* file_content = get_file_content(arguments.filename);
+    if(file_content == NULL) {
+      return 1;
+    }
+
+    const int word_count = count_words(file_content);
+
+    printf("%d %s\n", word_count, arguments.filename);
     free(file_content);
   }
 
@@ -65,9 +87,9 @@ int main(int argc, char **argv) {
     const int byte_count = count_bytes_in_file(arguments.filename);
     if(byte_count == -1) {
       return 1;
-    } else {
-      printf("%d %s\n", byte_count, arguments.filename);      
     }
+
+    printf("%d %s\n", byte_count, arguments.filename);
   }
 
   return 0;
