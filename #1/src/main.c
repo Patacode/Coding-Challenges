@@ -14,6 +14,7 @@ static struct argp_option options[] = {
   {"bytes", 'c', 0, 0, "print the byte counts"},
   {"lines", 'l', 0, 0, "print the newline counts"},
   {"words", 'w', 0, 0, "print the word counts"},
+  {"chars", 'm', 0, 0, "print the character counts"},
   { 0 }
 };
 
@@ -21,6 +22,7 @@ typedef struct {
   bool count_bytes;
   bool count_lines;
   bool count_words;
+  bool count_chars;
   char* filename;
 } Arguments;
 
@@ -30,6 +32,7 @@ static error_t parse_opt(int key, char* arg, struct argp_state *state) {
     case 'c': arguments -> count_bytes = true; break;
     case 'l': arguments -> count_lines = true; break;
     case 'w': arguments -> count_words = true; break;
+    case 'm': arguments -> count_chars = true; break;
     case ARGP_KEY_ARG:
       if(state -> arg_num == 0) {
         arguments -> filename = arg;
@@ -56,6 +59,8 @@ int main(int argc, char **argv) {
   arguments.filename = NULL;
   arguments.count_bytes = false;
   arguments.count_lines = false;
+  arguments.count_words = false;
+  arguments.count_chars = false;
 
   argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
@@ -80,6 +85,18 @@ int main(int argc, char **argv) {
     const int word_count = count_words(file_content);
 
     printf("%d %s\n", word_count, arguments.filename);
+    free(file_content);
+  }
+
+  if(arguments.count_chars) {
+    char* file_content = get_file_content(arguments.filename);
+    if(file_content == NULL) {
+      return 1;
+    }
+
+    const int char_count = count_chars(file_content);
+
+    printf("%d %s\n", char_count, arguments.filename);
     free(file_content);
   }
 
