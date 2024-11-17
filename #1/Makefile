@@ -34,11 +34,13 @@ run: $(TARGET_SRC)
 test: $(TARGET_TEST)
 	./$(TARGET_TEST)
 
-report: $(TARGET_TEST)
+report: test
 	lcov --capture --directory . --output-file coverage.info
-	genhtml coverage.info --output-directory out
+	genhtml coverage.info --output-directory out --exclude $(UNITY_DIR)
 	firefox out/index.html
 
 clean:
 	rm -f *.gcda *.gcno
 	rm -f $(TARGET_TEST) $(TARGET_SRC)
+	rm -f coverage.info
+	rm -rf out/
