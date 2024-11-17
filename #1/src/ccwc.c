@@ -102,3 +102,19 @@ int count_words(const char *const str) {
 
   return counter;
 }
+
+int count_chars(const char *const str) {
+  int idx = 0;
+  int counter = 0;
+  wchar_t wc;
+  size_t len;
+
+  while(str[idx] != '\0') {
+    len = mbrtowc(&wc, str + idx, MB_CUR_MAX, NULL);
+    if(len != (size_t) - 1 && len != (size_t) - 2 && iswprint(wc)) idx += len;
+    else idx++;
+    counter++;
+  }
+
+  return counter;
+}

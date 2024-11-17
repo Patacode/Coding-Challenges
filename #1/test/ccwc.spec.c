@@ -348,6 +348,53 @@ void test_word_count_one_line_with_chars_not_in_charset(void) {
 	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
 }
 
+/**
+ * Test scenarios(count_chars(str))
+ * - one line with chars in ascii charset
+ * - one line with chars in utf charset
+ * - one line with chars in utf charset but ascii effective
+ * - one line with chars in ascii charset but utf effective
+ */
+void test_char_count_one_line_with_chars_in_ascii_charset(void) {
+	setlocale(LC_CTYPE, "POSIX");
+
+	const char *const str = "Hello friend";
+	const int actual_char_count = count_chars(str);
+	const int expected_char_count = 12;
+
+	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+}
+
+void test_char_count_one_line_with_chars_in_utf_charset(void) {
+	setlocale(LC_CTYPE, "fr_BE.UTF8");
+
+	const char *const str = "Hello friend 😀";
+	const int actual_char_count = count_chars(str);
+	const int expected_char_count = 14;
+
+	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+}
+
+void test_char_count_one_line_with_chars_in_utf_charset_but_ascii_locale(void) {
+	setlocale(LC_CTYPE, "POSIX");
+
+	const char *const str = "Hello friend 😀";
+	const int actual_char_count = count_chars(str);
+	const int expected_char_count = 17;
+
+	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+}
+
+void test_char_count_one_line_with_chars_in_ascii_charset_but_utf_locale(void) {
+	setlocale(LC_CTYPE, "fr_BE.UTF8");
+
+	const char *const str = "Hello friend";
+	const int actual_char_count = count_chars(str);
+	const int expected_char_count = 12;
+
+	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -396,6 +443,12 @@ int main(void)
 	RUN_TEST(test_word_count_two_lines_with_whitespaces);
 	RUN_TEST(test_word_count_one_line_utf_chars);
 	RUN_TEST(test_word_count_one_line_with_chars_not_in_charset);
+
+	// count_chars(str)
+	RUN_TEST(test_char_count_one_line_with_chars_in_ascii_charset);
+	RUN_TEST(test_char_count_one_line_with_chars_in_utf_charset);
+	RUN_TEST(test_char_count_one_line_with_chars_in_utf_charset_but_ascii_locale);
+	RUN_TEST(test_char_count_one_line_with_chars_in_ascii_charset_but_utf_locale);
 
 	return UNITY_END();
 }

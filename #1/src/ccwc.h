@@ -34,6 +34,19 @@ int count_newlines(const char *const str);
 int count_words(const char *const str);
 
 /**
+ * Counts the number of chars contained in the given string, as per
+ * current locale.
+ * 
+ * - Given string must be NULL-terminated.
+ * 
+ * - Invalid characters are not counted.
+ * 
+ * @param str the string to be processed
+ * @return the number of chars contained in the given string.
+ */
+int count_chars(const char *const str);
+
+/**
  * Reads all the character contained in the pointed file.
  * 
  * - The returned char pointer is referring to a dynamically allocated
