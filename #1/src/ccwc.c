@@ -9,7 +9,7 @@
 
 #include "ccwc.h"
 
-size_t count_bytes(const char *const str)
+size_t count_bytes(const char* str)
 {
 	size_t idx = 0;
   while(str[idx] != '\0') {
@@ -19,7 +19,7 @@ size_t count_bytes(const char *const str)
   return idx;
 }
 
-char* get_file_content(const char *const filename) {
+char* get_file_content(const char* filename) {
   FILE* file = fopen(filename, "rb"); // Open the file in binary read mode
   if(file == NULL) {
     perror("Error opening file");
@@ -49,7 +49,7 @@ char* get_file_content(const char *const filename) {
   return buffer;
 }
 
-ssize_t count_bytes_in_file(const char *const filename) {
+ssize_t count_bytes_in_file(const char* filename) {
   FILE* file = fopen(filename, "rb");
   if(file == NULL) {
     perror("Error opening file");
@@ -68,7 +68,7 @@ ssize_t count_bytes_in_file(const char *const filename) {
   return file_size;
 }
 
-size_t count_newlines(const char *const str) {
+size_t count_newlines(const char* str) {
   size_t idx = 0;
   size_t counter = 0;
   while(str[idx] != '\0') {
@@ -79,7 +79,7 @@ size_t count_newlines(const char *const str) {
   return counter;
 }
 
-bool is_printable_word(const char *const word) {
+bool is_printable_word(const char* word) {
   size_t idx = 0;
   wchar_t wc;
   size_t len;
@@ -93,7 +93,7 @@ bool is_printable_word(const char *const word) {
   return false;
 }
 
-size_t count_words(const char *const str) {
+size_t count_words(const char* str) {
   size_t idx = 0;
   size_t counter = 0;
   while(str[idx] != '\0') {
@@ -115,7 +115,7 @@ size_t count_words(const char *const str) {
   return counter;
 }
 
-size_t count_chars(const char *const str) {
+size_t count_chars(const char* str) {
   size_t idx = 0;
   size_t counter = 0;
   wchar_t wc;

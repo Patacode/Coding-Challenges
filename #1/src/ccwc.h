@@ -9,7 +9,7 @@
  * @param str the string to be processed
  * @return the number of bytes contained in the given string.
  */
-size_t count_bytes(const char *const str);
+size_t count_bytes(const char* str);
 
 /**
  * Counts the number of newlines contained in the given string.
@@ -19,7 +19,7 @@ size_t count_bytes(const char *const str);
  * @param str the string to be processed
  * @return the number of newlines contained in the given string.
  */
-size_t count_newlines(const char *const str);
+size_t count_newlines(const char* str);
 
 /**
  * Counts the number of words contained in the given string.
@@ -32,7 +32,7 @@ size_t count_newlines(const char *const str);
  * @param str the string to be processed
  * @return the number of words contained in the given string.
  */
-size_t count_words(const char *const str);
+size_t count_words(const char* str);
 
 /**
  * Counts the number of chars contained in the given string, as per
@@ -45,7 +45,7 @@ size_t count_words(const char *const str);
  * @param str the string to be processed
  * @return the number of chars contained in the given string.
  */
-size_t count_chars(const char *const str);
+size_t count_chars(const char* str);
 
 /**
  * Reads all the character contained in the pointed file.
@@ -57,7 +57,7 @@ size_t count_chars(const char *const str);
  * @param filename the name of the file to be processed
  * @return the content of the pointed file.  
  */
-char* get_file_content(const char *const filename);
+char* get_file_content(const char* filename);
 
 /**
  * Counts the number of bytes contained in the pointed file.
@@ -65,7 +65,7 @@ char* get_file_content(const char *const filename);
  * @param filename the name of the file to be processed
  * @return the number of bytes contained in the pointed file, or -1 if an error occured.
  */
-ssize_t count_bytes_in_file(const char *const filename);
+ssize_t count_bytes_in_file(const char* filename);
 
 /**
  * Checks if given word is printable as per current locale.
@@ -75,7 +75,7 @@ ssize_t count_bytes_in_file(const char *const filename);
  * @param word the word to be checked
  * @return true if given word is printable, false otherwise. 
  */
-bool is_printable_word(const char *const word);
+bool is_printable_word(const char* word);
 
 /**
  * Reads all the character contained in stdin.
