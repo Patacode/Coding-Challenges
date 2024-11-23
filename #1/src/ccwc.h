@@ -1,24 +1,25 @@
 #include <stdbool.h>
+#include <sys/types.h>
 
 /**
  * Counts the number of bytes contained in the given string.
  * 
- * - Given string must be NULL-terminated.
+ * - Given string must be null-terminated.
  * 
  * @param str the string to be processed
  * @return the number of bytes contained in the given string.
  */
-int count_bytes(const char *const str);
+size_t count_bytes(const char *const str);
 
 /**
  * Counts the number of newlines contained in the given string.
  * 
- * - Given string must be NULL-terminated.
+ * - Given string must be null-terminated.
  * 
  * @param str the string to be processed
  * @return the number of newlines contained in the given string.
  */
-int count_newlines(const char *const str);
+size_t count_newlines(const char *const str);
 
 /**
  * Counts the number of words contained in the given string.
@@ -31,7 +32,7 @@ int count_newlines(const char *const str);
  * @param str the string to be processed
  * @return the number of words contained in the given string.
  */
-int count_words(const char *const str);
+size_t count_words(const char *const str);
 
 /**
  * Counts the number of chars contained in the given string, as per
@@ -44,7 +45,7 @@ int count_words(const char *const str);
  * @param str the string to be processed
  * @return the number of chars contained in the given string.
  */
-int count_chars(const char *const str);
+size_t count_chars(const char *const str);
 
 /**
  * Reads all the character contained in the pointed file.
@@ -62,9 +63,9 @@ char* get_file_content(const char *const filename);
  * Counts the number of bytes contained in the pointed file.
  * 
  * @param filename the name of the file to be processed
- * @return the number of bytes contained in the pointed file.
+ * @return the number of bytes contained in the pointed file, or -1 if an error occured.
  */
-int count_bytes_in_file(const char *const filename);
+ssize_t count_bytes_in_file(const char *const filename);
 
 /**
  * Checks if given word is printable as per current locale.

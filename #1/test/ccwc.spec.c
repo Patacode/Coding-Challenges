@@ -23,28 +23,28 @@ void tearDown(void) {
 void test_byte_count_one_line(void)
 {
 	const char *const str = "Hello, World";
-	const int actual_byte_count = count_bytes(str);
-	const int expected_byte_count = 12;
+	const size_t actual_byte_count = count_bytes(str);
+	const size_t expected_byte_count = 12;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_size_t(expected_byte_count, actual_byte_count);
 }
 
 void test_byte_count_two_lines(void)
 {
 	const char *const str = "Hello, World\nMy friend !";
-	const int actual_byte_count = count_bytes(str);
-	const int expected_byte_count = 24;
+	const size_t actual_byte_count = count_bytes(str);
+	const size_t expected_byte_count = 24;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_size_t(expected_byte_count, actual_byte_count);
 }
 
 void test_byte_count_one_line_with_non_ascii(void)
 {
 	const char *const str = "Hello, World 😀 !";
-	const int actual_byte_count = count_bytes(str);
-	const int expected_byte_count = 19;
+	const size_t actual_byte_count = count_bytes(str);
+	const size_t expected_byte_count = 19;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_size_t(expected_byte_count, actual_byte_count);
 }
 
 /**
@@ -114,42 +114,42 @@ void test_file_content_retrieval_unknown_file(void) {
  */
 void test_byte_count_in_file_one_line(void) {
 	const char *const filename = "data/ascii_one_line.txt";
-	const int actual_byte_count = count_bytes_in_file(filename);
-	const int expected_byte_count = 5;
+	const ssize_t actual_byte_count = count_bytes_in_file(filename);
+	const ssize_t expected_byte_count = 5;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_INT64(expected_byte_count, actual_byte_count);
 }
 
 void test_byte_count_in_file_two_lines(void) {
 	const char *const filename = "data/ascii_two_lines.txt";
-	const int actual_byte_count = count_bytes_in_file(filename);
-	const int expected_byte_count = 12;
+	const ssize_t actual_byte_count = count_bytes_in_file(filename);
+	const ssize_t expected_byte_count = 12;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_INT64(expected_byte_count, actual_byte_count);
 }
 
 void test_byte_count_in_file_one_line_with_non_ascii(void) {
 	const char *const filename = "data/ascii_one_line_non_ascii.txt";
-	const int actual_byte_count = count_bytes_in_file(filename);
-	const int expected_byte_count = 10;
+	const ssize_t actual_byte_count = count_bytes_in_file(filename);
+	const ssize_t expected_byte_count = 10;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_INT64(expected_byte_count, actual_byte_count);
 }
 
 void test_byte_count_in_file_one_line_with_newline(void) {
 	const char *const filename = "data/ascii_one_line_with_newline.txt";
-	const int actual_byte_count = count_bytes_in_file(filename);
-	const int expected_byte_count = 6;
+	const ssize_t actual_byte_count = count_bytes_in_file(filename);
+	const ssize_t expected_byte_count = 6;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_INT64(expected_byte_count, actual_byte_count);
 }
 
 void test_byte_count_in_file_one_line_unknown_file(void) {
 	const char *const filename = "data/unknown.txt";
-	const int actual_byte_count = count_bytes_in_file(filename);
-	const int expected_byte_count = -1;
+	const ssize_t actual_byte_count = count_bytes_in_file(filename);
+	const ssize_t expected_byte_count = -1;
 
-	TEST_ASSERT_EQUAL_INT(expected_byte_count, actual_byte_count);
+	TEST_ASSERT_EQUAL_INT64(expected_byte_count, actual_byte_count);
 }
 
 /**
@@ -161,28 +161,28 @@ void test_byte_count_in_file_one_line_unknown_file(void) {
 void test_newline_count_one_line_without_newline(void)
 {
 	const char *const str = "Hello, World";
-	const int actual_newline_count = count_newlines(str);
-	const int expected_newline_count = 0;
+	const size_t actual_newline_count = count_newlines(str);
+	const size_t expected_newline_count = 0;
 
-	TEST_ASSERT_EQUAL_INT(expected_newline_count, actual_newline_count);
+	TEST_ASSERT_EQUAL_size_t(expected_newline_count, actual_newline_count);
 }
 
 void test_newline_count_two_lines_with_one_newline(void)
 {
 	const char *const str = "Hello, World\nMy friend !";
-	const int actual_newline_count = count_newlines(str);
-	const int expected_newline_count = 1;
+	const size_t actual_newline_count = count_newlines(str);
+	const size_t expected_newline_count = 1;
 
-	TEST_ASSERT_EQUAL_INT(expected_newline_count, actual_newline_count);
+	TEST_ASSERT_EQUAL_size_t(expected_newline_count, actual_newline_count);
 }
 
 void test_newline_count_one_line_with_newline(void)
 {
 	const char *const str = "Hello, World 😀 !\n";
-	const int actual_newline_count = count_newlines(str);
-	const int expected_newline_count = 1;
+	const size_t actual_newline_count = count_newlines(str);
+	const size_t expected_newline_count = 1;
 
-	TEST_ASSERT_EQUAL_INT(expected_newline_count, actual_newline_count);
+	TEST_ASSERT_EQUAL_size_t(expected_newline_count, actual_newline_count);
 }
 
 /**
@@ -258,94 +258,94 @@ void test_word_printability_chars_not_in_charset(void) {
  */
 void test_word_count_one_line_with_no_whitespace(void) {
 	const char *const str = "Hello";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 1;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 1;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_with_whitespaces(void) {
 	const char *const str = "Hello friend of mine";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 4;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 4;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_with_whitespaces_and_newline(void) {
 	const char *const str = "Hello friend of mine\n";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 4;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 4;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_with_consecutive_whitespaces(void) {
 	const char *const str = "Hello   friend   of  mine ";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 4;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 4;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_with_tabs(void) {
 	const char *const str = "Hello\t friend \t  \tof  mine ";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 4;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 4;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_with_one_letter_words(void) {
 	const char *const str = "a  b c\t d \te\tf \t g\t \n";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 7;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 7;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_with_non_printable_chars(void) {
 	const char *const str = "Hello \001\002 max";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 2;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 2;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_two_lines_without_whitespace(void) {
 	const char *const str = "Hello\nfriend";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 2;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 2;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_two_lines_with_whitespaces(void) {
 	const char *const str = "Hello \n  friend of mine";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 4;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 4;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_utf_chars(void) {
 	setlocale(LC_CTYPE, "fr_BE.UTF8");
 
 	const char *const str = "Hello 😀 friend";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 3;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 3;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 void test_word_count_one_line_with_chars_not_in_charset(void) {
 	setlocale(LC_CTYPE, "POSIX");
 
 	const char *const str = "Hello 😀 friend";
-	const int actual_word_count = count_words(str);
-	const int expected_word_count = 2;
+	const size_t actual_word_count = count_words(str);
+	const size_t expected_word_count = 2;
 
-	TEST_ASSERT_EQUAL_INT(expected_word_count, actual_word_count);
+	TEST_ASSERT_EQUAL_size_t(expected_word_count, actual_word_count);
 }
 
 /**
@@ -359,40 +359,40 @@ void test_char_count_one_line_with_chars_in_ascii_charset(void) {
 	setlocale(LC_CTYPE, "POSIX");
 
 	const char *const str = "Hello friend";
-	const int actual_char_count = count_chars(str);
-	const int expected_char_count = 12;
+	const size_t actual_char_count = count_chars(str);
+	const size_t expected_char_count = 12;
 
-	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+	TEST_ASSERT_EQUAL_size_t(expected_char_count, actual_char_count);
 }
 
 void test_char_count_one_line_with_chars_in_utf_charset(void) {
 	setlocale(LC_CTYPE, "fr_BE.UTF8");
 
 	const char *const str = "Hello friend 😀";
-	const int actual_char_count = count_chars(str);
-	const int expected_char_count = 14;
+	const size_t actual_char_count = count_chars(str);
+	const size_t expected_char_count = 14;
 
-	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+	TEST_ASSERT_EQUAL_size_t(expected_char_count, actual_char_count);
 }
 
 void test_char_count_one_line_with_chars_in_utf_charset_but_ascii_locale(void) {
 	setlocale(LC_CTYPE, "POSIX");
 
 	const char *const str = "Hello friend 😀";
-	const int actual_char_count = count_chars(str);
-	const int expected_char_count = 17;
+	const size_t actual_char_count = count_chars(str);
+	const size_t expected_char_count = 17;
 
-	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+	TEST_ASSERT_EQUAL_size_t(expected_char_count, actual_char_count);
 }
 
 void test_char_count_one_line_with_chars_in_ascii_charset_but_utf_locale(void) {
 	setlocale(LC_CTYPE, "fr_BE.UTF8");
 
 	const char *const str = "Hello friend";
-	const int actual_char_count = count_chars(str);
-	const int expected_char_count = 12;
+	const size_t actual_char_count = count_chars(str);
+	const size_t expected_char_count = 12;
 
-	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
+	TEST_ASSERT_EQUAL_size_t(expected_char_count, actual_char_count);
 }
 
 /**

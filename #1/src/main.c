@@ -82,44 +82,39 @@ int process_args(const Arguments *const arguments) {
 
   int flag_idx = 0;
   int count_value_idx = 0;
-  int count_values[4];
+  size_t count_values[4];
   while(flag_idx < 4) {
     char current_count_flag = arguments -> count_flags[flag_idx];
     if(current_count_flag != '\0') {
+      size_t count_value;
       switch(current_count_flag) {
         case 'l':
-          const int newline_count = count_newlines(file_content);
-          count_values[count_value_idx] = newline_count;
-          count_value_idx++;
+          count_value = count_newlines(file_content);
           break;
         case 'w':
-          const int word_count = count_words(file_content);
-          count_values[count_value_idx] = word_count;
-          count_value_idx++;
+          count_value = count_words(file_content);
           break;
         case 'm':
-          const int char_count = count_chars(file_content);
-          count_values[count_value_idx] = char_count;
-          count_value_idx++;
+          count_value = count_chars(file_content);
           break;
         case 'c':
-          int byte_count;
           if(arguments -> is_from_stdin) {
-            byte_count = count_bytes(file_content);
+            count_value = count_bytes(file_content);
           } else {
-            byte_count = count_bytes_in_file(arguments -> filename);
+            ssize_t tmp_byte_count = count_bytes_in_file(arguments -> filename);
+            if(tmp_byte_count == -1) return 1;
+            count_value = tmp_byte_count;
           }
-          if(byte_count == -1) return 1;
-          count_values[count_value_idx] = byte_count;
-          count_value_idx++;
           break;
       }
+      count_values[count_value_idx] = count_value;
+      count_value_idx++;
     }
 
     flag_idx++;
   }
 
-  for(int i = 0; i < count_value_idx; i++) printf("%d ", count_values[i]);
+  for(int i = 0; i < count_value_idx; i++) printf("%zd ", count_values[i]);
   if(arguments -> is_from_stdin) printf("\n");
   else printf("%s\n", arguments -> filename);
 

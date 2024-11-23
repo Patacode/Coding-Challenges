@@ -9,9 +9,9 @@
 
 #include "ccwc.h"
 
-int count_bytes(const char *const str)
+size_t count_bytes(const char *const str)
 {
-	int idx = 0;
+	size_t idx = 0;
   while(str[idx] != '\0') {
     idx++;
   }
@@ -30,6 +30,12 @@ char* get_file_content(const char *const filename) {
   long file_size = ftell(file);
   rewind(file);
 
+  if(file_size < 0) {
+    perror("Error determining file size");
+    fclose(file);
+    return NULL;
+  }
+
   char* buffer = (char*) malloc(file_size + 1);
   if(buffer == NULL) {
     perror("Memory allocation error");
@@ -43,8 +49,8 @@ char* get_file_content(const char *const filename) {
   return buffer;
 }
 
-int count_bytes_in_file(const char *const filename) {
-  FILE* file = fopen(filename, "rb"); // Open the file in binary read mode
+ssize_t count_bytes_in_file(const char *const filename) {
+  FILE* file = fopen(filename, "rb");
   if(file == NULL) {
     perror("Error opening file");
     return -1;
@@ -54,12 +60,17 @@ int count_bytes_in_file(const char *const filename) {
   long file_size = ftell(file);
   fclose(file);
 
+  if(file_size < 0) {
+    perror("Error determining file size");
+    return -1;
+  }
+
   return file_size;
 }
 
-int count_newlines(const char *const str) {
-  int idx = 0;
-  int counter = 0;
+size_t count_newlines(const char *const str) {
+  size_t idx = 0;
+  size_t counter = 0;
   while(str[idx] != '\0') {
     if(str[idx] == '\n') counter++;
     idx++;
@@ -69,7 +80,7 @@ int count_newlines(const char *const str) {
 }
 
 bool is_printable_word(const char *const word) {
-  int idx = 0;
+  size_t idx = 0;
   wchar_t wc;
   size_t len;
 
@@ -82,14 +93,14 @@ bool is_printable_word(const char *const word) {
   return false;
 }
 
-int count_words(const char *const str) {
-  int idx = 0;
-  int counter = 0;
+size_t count_words(const char *const str) {
+  size_t idx = 0;
+  size_t counter = 0;
   while(str[idx] != '\0') {
     if(!isspace(str[idx])) {
-      int jdx = idx;
+      size_t jdx = idx;
       while(str[jdx] != '\0' && !isspace(str[jdx])) jdx++;
-      const int word_size = jdx - idx;
+      const size_t word_size = jdx - idx;
       if(word_size > 0) {
         char current_word[word_size + 1];
         strncpy(current_word, str + idx, word_size);
@@ -104,9 +115,9 @@ int count_words(const char *const str) {
   return counter;
 }
 
-int count_chars(const char *const str) {
-  int idx = 0;
-  int counter = 0;
+size_t count_chars(const char *const str) {
+  size_t idx = 0;
+  size_t counter = 0;
   wchar_t wc;
   size_t len;
 
@@ -131,9 +142,9 @@ char* get_stdin_content(void) {
 
   size_t len = 0;
   ssize_t nread;
-  long counter = 0;
-  long buffer_offset = 0;
-  long buffer_size = block_size;
+  size_t counter = 0;
+  size_t buffer_offset = 0;
+  size_t buffer_size = block_size;
   while((nread = getline(&line, &len, stdin)) != -1) {
     counter += nread;
     if(counter >= buffer_size) {
