@@ -403,7 +403,7 @@ void test_char_count_one_line_with_chars_in_ascii_charset_but_utf_locale(void) {
 void test_get_stdin_content_one_line(void) {
   freopen("data/ascii_one_line.txt", "r", stdin);
 
-	const char *const actual_stdin_content = get_stdin_content();
+	char* actual_stdin_content = get_stdin_content();
 	const char *const expected_stdin_content = "hello";
 
 	dynamic_content = actual_stdin_content;
@@ -412,10 +412,10 @@ void test_get_stdin_content_one_line(void) {
 }
 
 void test_get_stdin_content_huge_content(void) {
-	const char *const filename = "data/test.txt";
+	const char* filename = "data/test.txt";
   freopen(filename, "r", stdin);
 
-	const char *const actual_stdin_content = get_stdin_content();
+	char* actual_stdin_content = get_stdin_content();
 	const char *const expected_stdin_content = get_file_content(filename);
 
 	dynamic_content = actual_stdin_content;
