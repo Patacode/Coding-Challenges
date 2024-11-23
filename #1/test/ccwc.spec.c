@@ -395,6 +395,34 @@ void test_char_count_one_line_with_chars_in_ascii_charset_but_utf_locale(void) {
 	TEST_ASSERT_EQUAL_INT(expected_char_count, actual_char_count);
 }
 
+/**
+ * Test scenarios(get_stdin_content(void))
+ * - retrieve one line
+ * - retrieve huge content
+ */
+void test_get_stdin_content_one_line(void) {
+  freopen("data/ascii_one_line.txt", "r", stdin);
+
+	const char *const actual_stdin_content = get_stdin_content();
+	const char *const expected_stdin_content = "hello";
+
+	dynamic_content = actual_stdin_content;
+
+	TEST_ASSERT_EQUAL_STRING(expected_stdin_content, actual_stdin_content);
+}
+
+void test_get_stdin_content_huge_content(void) {
+	const char *const filename = "data/test.txt";
+  freopen(filename, "r", stdin);
+
+	const char *const actual_stdin_content = get_stdin_content();
+	const char *const expected_stdin_content = get_file_content(filename);
+
+	dynamic_content = actual_stdin_content;
+
+	TEST_ASSERT_EQUAL_STRING(expected_stdin_content, actual_stdin_content);
+}
+
 int main(void)
 {
 	UNITY_BEGIN();
@@ -449,6 +477,10 @@ int main(void)
 	RUN_TEST(test_char_count_one_line_with_chars_in_utf_charset);
 	RUN_TEST(test_char_count_one_line_with_chars_in_utf_charset_but_ascii_locale);
 	RUN_TEST(test_char_count_one_line_with_chars_in_ascii_charset_but_utf_locale);
+
+ 	// get_stdin_content(void)
+	RUN_TEST(test_get_stdin_content_one_line);
+	RUN_TEST(test_get_stdin_content_huge_content);
 
 	return UNITY_END();
 }

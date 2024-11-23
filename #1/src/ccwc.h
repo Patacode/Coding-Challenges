@@ -75,3 +75,14 @@ int count_bytes_in_file(const char *const filename);
  * @return true if given word is printable, false otherwise. 
  */
 bool is_printable_word(const char *const word);
+
+/**
+ * Reads all the character contained in stdin.
+ * 
+ * - The returned char pointer is referring to a dynamically allocated
+ * memory space. It is then up to the client code not to forget to
+ * free up this part of memory.
+ * 
+ * @return the content of stdin.  
+ */
+char* get_stdin_content(void);

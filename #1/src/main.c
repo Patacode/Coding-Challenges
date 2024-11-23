@@ -20,10 +20,8 @@ static struct argp_option options[] = {
 };
 
 typedef struct {
-  bool count_bytes;
-  bool count_lines;
-  bool count_words;
-  bool count_chars;
+  bool is_from_stdin;
+  int flag_counter;
   char count_flags[4];
   char* filename;
 } Arguments;
@@ -31,14 +29,15 @@ typedef struct {
 bool set_count(Arguments *const arguments, int key) {
   int flag_idx = -1;
   switch(key) {
-    case 'l': arguments -> count_lines = true; flag_idx = 0; break;
-    case 'w': arguments -> count_words = true; flag_idx = 1; break;
-    case 'm': arguments -> count_chars = true; flag_idx = 2; break;
-    case 'c': arguments -> count_bytes = true; flag_idx = 3; break;
+    case 'l': flag_idx = 0; break;
+    case 'w': flag_idx = 1; break;
+    case 'm': flag_idx = 2; break;
+    case 'c': flag_idx = 3; break;
   }
 
   bool is_valid_key = flag_idx != -1;
   if(is_valid_key) {
+    arguments -> flag_counter++;
     arguments -> count_flags[flag_idx] = key;
   }
 
@@ -59,7 +58,7 @@ static error_t parse_opt(int key, char* arg, struct argp_state *state) {
       break;
     case ARGP_KEY_END:
       if(state -> arg_num < 1) {
-        argp_usage(state);
+        arguments -> is_from_stdin = true;
       }
       break;
     default: if(!was_valid_key) return ARGP_ERR_UNKNOWN;
@@ -71,7 +70,12 @@ static error_t parse_opt(int key, char* arg, struct argp_state *state) {
 static struct argp argp = { options, parse_opt, args_doc, doc };
 
 int process_args(const Arguments *const arguments) {
-  char* file_content = get_file_content(arguments -> filename);
+  char* file_content;
+  if(arguments -> is_from_stdin) {
+    file_content = get_stdin_content();
+  } else {
+    file_content = get_file_content(arguments -> filename);
+  }
   if(file_content == NULL) {
     return 1;
   }
@@ -99,7 +103,12 @@ int process_args(const Arguments *const arguments) {
           count_value_idx++;
           break;
         case 'c':
-          const int byte_count = count_bytes_in_file(arguments -> filename);
+          int byte_count;
+          if(arguments -> is_from_stdin) {
+            byte_count = count_bytes(file_content);
+          } else {
+            byte_count = count_bytes_in_file(arguments -> filename);
+          }
           if(byte_count == -1) return 1;
           count_values[count_value_idx] = byte_count;
           count_value_idx++;
@@ -111,7 +120,8 @@ int process_args(const Arguments *const arguments) {
   }
 
   for(int i = 0; i < count_value_idx; i++) printf("%d ", count_values[i]);
-  printf("%s\n", arguments -> filename);
+  if(arguments -> is_from_stdin) printf("\n");
+  else printf("%s\n", arguments -> filename);
 
   free(file_content);
   return 0;
@@ -122,15 +132,16 @@ int main(int argc, char **argv) {
 
   Arguments arguments;
   arguments.filename = NULL;
-  arguments.count_bytes = false;
-  arguments.count_lines = false;
-  arguments.count_words = false;
-  arguments.count_chars = false;
+  arguments.is_from_stdin = false;
+  arguments.flag_counter = 0;
+  arguments.count_flags[0] = '\0';
+  arguments.count_flags[1] = '\0';
+  arguments.count_flags[2] = '\0';
+  arguments.count_flags[3] = '\0';
 
-  strcpy(arguments.count_flags, "\0\0\0\0");
   argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
-  if(arguments.count_flags[0] == '\0') {
+  if(arguments.flag_counter == 0) {
     arguments.count_flags[0] = 'l';
     arguments.count_flags[1] = 'w';
     arguments.count_flags[2] = 'c';

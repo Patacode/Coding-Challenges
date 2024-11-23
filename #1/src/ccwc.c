@@ -5,6 +5,7 @@
 #include <wchar.h>
 #include <wctype.h>
 #include <string.h>
+#include <sys/types.h>
 
 #include "ccwc.h"
 
@@ -117,4 +118,47 @@ int count_chars(const char *const str) {
   }
 
   return counter;
+}
+
+char* get_stdin_content(void) {
+  char *line = NULL;
+  const int block_size = 1024;
+  char* buffer = (char*) malloc(block_size + 1);
+  if(buffer == NULL) {
+    perror("Memory allocation error");
+    return NULL;
+  }
+
+  size_t len = 0;
+  ssize_t nread;
+  long counter = 0;
+  long buffer_offset = 0;
+  long buffer_size = block_size;
+  while((nread = getline(&line, &len, stdin)) != -1) {
+    counter += nread;
+    if(counter >= buffer_size) {
+      buffer_size += block_size;
+      char* temp = realloc(buffer, buffer_size);
+      if(temp == NULL) {
+        perror("Memory allocation error");
+        free(buffer);
+        free(line);
+        return NULL;
+      } else {
+        buffer = temp;
+      }
+    }
+    strcpy(buffer + buffer_offset, line);
+    buffer_offset = counter;
+  }
+
+  free(line);
+  if(ferror(stdin)) {
+    perror("Error reading from stdin");
+    free(buffer);
+    return NULL;
+  }
+
+  buffer[counter] = '\0';
+  return buffer;
 }
