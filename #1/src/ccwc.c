@@ -133,7 +133,7 @@ size_t count_chars(const char *const str) {
 
 char* get_stdin_content(void) {
   char *line = NULL;
-  const int block_size = 1024;
+  const size_t block_size = 1024;
   char* buffer = (char*) malloc(block_size + 1);
   if(buffer == NULL) {
     perror("Memory allocation error");

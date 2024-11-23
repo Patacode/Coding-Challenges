@@ -38,7 +38,7 @@ bool set_count(Arguments *const arguments, int key) {
   bool is_valid_key = flag_idx != -1;
   if(is_valid_key) {
     arguments -> flag_counter++;
-    arguments -> count_flags[flag_idx] = key;
+    arguments -> count_flags[flag_idx] = (char) key;
   }
 
   return is_valid_key;
@@ -86,7 +86,7 @@ int process_args(const Arguments *const arguments) {
   while(flag_idx < 4) {
     char current_count_flag = arguments -> count_flags[flag_idx];
     if(current_count_flag != '\0') {
-      size_t count_value;
+      size_t count_value = 0;
       switch(current_count_flag) {
         case 'l':
           count_value = count_newlines(file_content);
@@ -103,7 +103,7 @@ int process_args(const Arguments *const arguments) {
           } else {
             ssize_t tmp_byte_count = count_bytes_in_file(arguments -> filename);
             if(tmp_byte_count == -1) return 1;
-            count_value = tmp_byte_count;
+            count_value = (size_t) tmp_byte_count;
           }
           break;
       }
@@ -114,7 +114,7 @@ int process_args(const Arguments *const arguments) {
     flag_idx++;
   }
 
-  for(int i = 0; i < count_value_idx; i++) printf("%zd ", count_values[i]);
+  for(int i = 0; i < count_value_idx; i++) printf("%zu ", count_values[i]);
   if(arguments -> is_from_stdin) printf("\n");
   else printf("%s\n", arguments -> filename);
 
