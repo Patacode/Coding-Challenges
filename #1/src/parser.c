@@ -3,14 +3,15 @@
 
 #include "parser.h"
 #include "ccwc.h"
+#include "constants.h"
 
 bool count_flag_setter(Arguments* args, int key) {
   int flag_idx = -1;
   switch(key) {
-    case 'l': flag_idx = 0; break;
-    case 'w': flag_idx = 1; break;
-    case 'm': flag_idx = 2; break;
-    case 'c': flag_idx = 3; break;
+    case LINE_FLAG: flag_idx = LINE_FLAG_INDEX; break;
+    case WORD_FLAG: flag_idx = WORD_FLAG_INDEX; break;
+    case CHAR_FLAG: flag_idx = CHAR_FLAG_INDEX; break;
+    case BYTE_FLAG: flag_idx = BYTE_FLAG_INDEX; break;
   }
 
   bool is_valid_key = flag_idx != -1;
@@ -49,9 +50,9 @@ void parse_args(const struct argp* argp, int argc, char** argv, Arguments* args)
   argp_parse(argp, argc, argv, 0, 0, args);
 
   if(args -> flag_counter == 0) {
-    args -> count_flags[0] = 'l';
-    args -> count_flags[1] = 'w';
-    args -> count_flags[3] = 'c';
+    args -> count_flags[LINE_FLAG_INDEX] = LINE_FLAG;
+    args -> count_flags[WORD_FLAG_INDEX] = WORD_FLAG;
+    args -> count_flags[BYTE_FLAG_INDEX] = BYTE_FLAG;
   }
 }
 
@@ -74,16 +75,16 @@ int process_args(const Arguments* args) {
     if(current_count_flag != '\0') {
       size_t count_value = 0;
       switch(current_count_flag) {
-        case 'l':
+        case LINE_FLAG:
           count_value = count_newlines(file_content);
           break;
-        case 'w':
+        case WORD_FLAG:
           count_value = count_words(file_content);
           break;
-        case 'm':
+        case CHAR_FLAG:
           count_value = count_chars(file_content);
           break;
-        case 'c':
+        case BYTE_FLAG:
           if(args -> is_from_stdin) {
             count_value = count_bytes(file_content);
           } else {
