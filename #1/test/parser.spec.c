@@ -24,7 +24,7 @@ void test_count_flag_setter_valid_key_l(void) {
   bool actual_result = count_flag_setter(&args, 'l');
 
   TEST_ASSERT_TRUE(actual_result);
-  TEST_ASSERT_EQUAL_INT(1, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(1, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('l', args.count_flags[0]);
 }
 
@@ -38,7 +38,7 @@ void test_count_flag_setter_valid_key_w(void) {
   bool actual_result = count_flag_setter(&args, 'w');
 
   TEST_ASSERT_TRUE(actual_result);
-  TEST_ASSERT_EQUAL_INT(1, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(1, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('w', args.count_flags[1]);
 }
 
@@ -52,7 +52,7 @@ void test_count_flag_setter_valid_key_m(void) {
   bool actual_result = count_flag_setter(&args, 'm');
 
   TEST_ASSERT_TRUE(actual_result);
-  TEST_ASSERT_EQUAL_INT(1, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(1, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('m', args.count_flags[2]);
 }
 
@@ -66,7 +66,7 @@ void test_count_flag_setter_valid_key_c(void) {
   bool actual_result = count_flag_setter(&args, 'c');
 
   TEST_ASSERT_TRUE(actual_result);
-  TEST_ASSERT_EQUAL_INT(1, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(1, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('c', args.count_flags[3]);
 }
 
@@ -89,7 +89,7 @@ void test_count_flag_setter_multiple_valid_keys(void) {
   actual_result = count_flag_setter(&args, 'c');
   TEST_ASSERT_TRUE(actual_result);
 
-  TEST_ASSERT_EQUAL_INT(4, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(4, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('l', args.count_flags[0]);
   TEST_ASSERT_EQUAL_CHAR('w', args.count_flags[1]);
   TEST_ASSERT_EQUAL_CHAR('m', args.count_flags[2]);
@@ -106,7 +106,7 @@ void test_count_flag_setter_invalid_key(void) {
   bool actual_result = count_flag_setter(&args, 'x');
 
   TEST_ASSERT_FALSE(actual_result);
-  TEST_ASSERT_EQUAL_INT(0, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(0, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[0]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[1]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[2]);
@@ -123,7 +123,7 @@ void test_count_flag_setter_valid_key_with_flag_counter_at_1(void) {
   bool actual_result = count_flag_setter(&args, 'w');
 
   TEST_ASSERT_TRUE(actual_result);
-  TEST_ASSERT_EQUAL_INT(2, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(2, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('w', args.count_flags[1]);
 }
 
@@ -150,7 +150,7 @@ void test_parse_opt_valid_key(void) {
   TEST_ASSERT_EQUAL_INT(0, actual_result);
   TEST_ASSERT_EQUAL_STRING(NULL, args.filename);
   TEST_ASSERT_FALSE(args.is_from_stdin);
-  TEST_ASSERT_EQUAL_INT(1, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(1, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('l', args.count_flags[0]);
 }
 
@@ -170,7 +170,7 @@ void test_parse_opt_valid_key_with_one_positional_argument(void) {
   TEST_ASSERT_EQUAL_INT(0, actual_result);
   TEST_ASSERT_EQUAL_STRING("file.txt", args.filename);
   TEST_ASSERT_FALSE(args.is_from_stdin);
-  TEST_ASSERT_EQUAL_INT(0, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(0, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[0]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[1]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[2]);
@@ -193,7 +193,7 @@ void test_parse_opt_valid_key_with_more_than_one_positional_argument(void) {
   TEST_ASSERT_EQUAL_INT(EX_USAGE, actual_result);
   TEST_ASSERT_EQUAL_STRING(NULL, args.filename);
   TEST_ASSERT_FALSE(args.is_from_stdin);
-  TEST_ASSERT_EQUAL_INT(0, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(0, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[0]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[1]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[2]);
@@ -216,7 +216,7 @@ void test_parse_opt_valid_key_with_no_positional_argument(void) {
   TEST_ASSERT_EQUAL_INT(0, actual_result);
   TEST_ASSERT_EQUAL_STRING(NULL, args.filename);
   TEST_ASSERT_TRUE(args.is_from_stdin);
-  TEST_ASSERT_EQUAL_INT(0, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(0, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[0]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[1]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[2]);
@@ -238,7 +238,7 @@ void test_parse_opt_invalid_key(void) {
   TEST_ASSERT_EQUAL_INT(ARGP_ERR_UNKNOWN, actual_result);
   TEST_ASSERT_EQUAL_STRING(NULL, args.filename);
   TEST_ASSERT_FALSE(args.is_from_stdin);
-  TEST_ASSERT_EQUAL_INT(0, args.flag_counter);
+  TEST_ASSERT_EQUAL_size_t(0, args.flag_counter);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[0]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[1]);
   TEST_ASSERT_EQUAL_CHAR('\0', args.count_flags[2]);

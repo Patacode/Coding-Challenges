@@ -2,7 +2,7 @@
 
 typedef struct {
   bool is_from_stdin;
-  int flag_counter;
+  size_t flag_counter;
   char count_flags[4];
   char* filename;
 } Arguments;

@@ -10,7 +10,7 @@
 const char* argp_program_version = "ccwc 1.0.0";
 const char* argp_program_bug_address = "<maxou.info@gmail.com>";
 static char doc[] = "A simplified clone of wc.";
-static char args_doc[] = "FILENAME";
+static char args_doc[] = "[FILENAME]";
 
 static struct argp_option options[] = {
   {"bytes", 'c', 0, 0, "print the byte counts"},
@@ -20,7 +20,7 @@ static struct argp_option options[] = {
   { 0 }
 };
 
-error_t parse_opt_wrapper(int key, char* arg, struct argp_state* state) {
+static error_t parse_opt_wrapper(int key, char* arg, struct argp_state* state) {
   error_t result = parse_opt(key, arg, state);
   if(result == argp_err_exit_status) argp_usage(state);
   return result;
