@@ -29,14 +29,6 @@ int main(void) {
 	RUN_TEST(test_newline_count_two_lines_with_one_newline);
 	RUN_TEST(test_newline_count_one_line_with_newline);
 
-	// is_printable_word(word)
-	RUN_TEST(test_word_printability_ascii_only);
-	RUN_TEST(test_word_printability_utf);
-	RUN_TEST(test_word_printability_non_printables);
-	RUN_TEST(test_word_printability_non_printables_and_printables);
-	RUN_TEST(test_word_printability_chars_not_in_charset_and_in_charset);
-	RUN_TEST(test_word_printability_chars_not_in_charset);
-
 	// count_words(str)
 	RUN_TEST(test_word_count_one_line_with_no_whitespace);
 	RUN_TEST(test_word_count_one_line_with_whitespaces);

@@ -1,0 +1,8 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define BLOCK_SIZE 1024
+#define ERROR_FILE_IHANDLING -1
+#define ERROR_FILE_SHANDLING NULL
+
+#endif // CONSTANTS_H

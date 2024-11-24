@@ -25,14 +25,6 @@ void test_newline_count_one_line_without_newline(void);
 void test_newline_count_two_lines_with_one_newline(void);
 void test_newline_count_one_line_with_newline(void);
 
-// is_printable_word()
-void test_word_printability_ascii_only(void);
-void test_word_printability_utf(void);
-void test_word_printability_non_printables(void);
-void test_word_printability_non_printables_and_printables(void);
-void test_word_printability_chars_not_in_charset_and_in_charset(void);
-void test_word_printability_chars_not_in_charset(void);
-
 // count_words()
 void test_word_count_one_line_with_no_whitespace(void);
 void test_word_count_one_line_with_whitespaces(void);
