@@ -1,3 +1,6 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <argp.h>
 
 typedef struct {
@@ -63,3 +66,5 @@ void parse_args(const struct argp*, int argc, char** argv, Arguments* args);
  * @return the exit code of the program (0 if everything went fine, 1 otherwise).
  */
 int process_args(const Arguments* args);
+
+#endif // PARSER_H

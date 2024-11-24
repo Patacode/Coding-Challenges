@@ -1,9 +1,6 @@
 #include <argp.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include <locale.h>
-#include <string.h>
-#include <sysexits.h>
 
 #include "parser.h"
 

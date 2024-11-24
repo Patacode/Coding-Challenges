@@ -1,3 +1,6 @@
+#ifndef CCWC_H
+#define CCWC_H
+
 #include <stdbool.h>
 #include <sys/types.h>
 
@@ -87,3 +90,5 @@ bool is_printable_word(const char* word);
  * @return the content of stdin.  
  */
 char* get_stdin_content(void);
+
+#endif /* CCWC_H */
