@@ -32,7 +32,7 @@ error_t parse_opt(int key, char* arg, struct argp_state *state) {
       if(state -> arg_num == 0) {
         args -> filename = arg;
       } else {
-        argp_usage(state);
+        return argp_err_exit_status;
       }
       break;
     case ARGP_KEY_END:
@@ -52,7 +52,7 @@ void parse_args(const struct argp* argp, int argc, char** argv, Arguments* args)
   if(args -> flag_counter == 0) {
     args -> count_flags[0] = 'l';
     args -> count_flags[1] = 'w';
-    args -> count_flags[2] = 'c';
+    args -> count_flags[3] = 'c';
   }
 }
 

@@ -20,7 +20,13 @@ static struct argp_option options[] = {
   { 0 }
 };
 
-static struct argp argp = { options, parse_opt, args_doc, doc };
+error_t parse_opt_wrapper(int key, char* arg, struct argp_state* state) {
+  error_t result = parse_opt(key, arg, state);
+  if(result == argp_err_exit_status) argp_usage(state);
+  return result;
+}
+
+static struct argp argp = { options, parse_opt_wrapper, args_doc, doc };
 
 int main(int argc, char **argv) {
   setlocale(LC_CTYPE, "");

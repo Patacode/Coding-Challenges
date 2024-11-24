@@ -3,6 +3,7 @@
 
 #include "unity.h"
 #include "ccwc.h"
+#include "ccwc.spec.h"
 
 char* dynamic_content;
 
@@ -421,66 +422,4 @@ void test_get_stdin_content_huge_content(void) {
 	dynamic_content = actual_stdin_content;
 
 	TEST_ASSERT_EQUAL_STRING(expected_stdin_content, actual_stdin_content);
-}
-
-int main(void)
-{
-	UNITY_BEGIN();
-
-	// count_bytes(str)
-	RUN_TEST(test_byte_count_one_line);
-	RUN_TEST(test_byte_count_two_lines);
-	RUN_TEST(test_byte_count_one_line_with_non_ascii);
-
-	// get_file_content(filename)
-	RUN_TEST(test_file_content_retrieval_one_line);
-	RUN_TEST(test_file_content_retrieval_two_lines);
-	RUN_TEST(test_file_content_retrieval_one_line_non_ascii);
-	RUN_TEST(test_file_content_retrieval_one_line_with_newline);
-	RUN_TEST(test_file_content_retrieval_unknown_file);
-
-	// count_bytes_in_file(filename)
-	RUN_TEST(test_byte_count_in_file_one_line);
-	RUN_TEST(test_byte_count_in_file_two_lines);
-	RUN_TEST(test_byte_count_in_file_one_line_with_non_ascii);
-	RUN_TEST(test_byte_count_in_file_one_line_with_newline);
-	RUN_TEST(test_byte_count_in_file_one_line_unknown_file);
-
-	// count_newlines(str)
-	RUN_TEST(test_newline_count_one_line_without_newline);
-	RUN_TEST(test_newline_count_two_lines_with_one_newline);
-	RUN_TEST(test_newline_count_one_line_with_newline);
-
-	// is_printable_word(word)
-	RUN_TEST(test_word_printability_ascii_only);
-	RUN_TEST(test_word_printability_utf);
-	RUN_TEST(test_word_printability_non_printables);
-	RUN_TEST(test_word_printability_non_printables_and_printables);
-	RUN_TEST(test_word_printability_chars_not_in_charset_and_in_charset);
-	RUN_TEST(test_word_printability_chars_not_in_charset);
-
-	// count_words(str)
-	RUN_TEST(test_word_count_one_line_with_no_whitespace);
-	RUN_TEST(test_word_count_one_line_with_whitespaces);
-	RUN_TEST(test_word_count_one_line_with_whitespaces_and_newline);
-	RUN_TEST(test_word_count_one_line_with_consecutive_whitespaces);
-	RUN_TEST(test_word_count_one_line_with_tabs);
-	RUN_TEST(test_word_count_one_line_with_one_letter_words);
-	RUN_TEST(test_word_count_one_line_with_non_printable_chars);
-	RUN_TEST(test_word_count_two_lines_without_whitespace);
-	RUN_TEST(test_word_count_two_lines_with_whitespaces);
-	RUN_TEST(test_word_count_one_line_utf_chars);
-	RUN_TEST(test_word_count_one_line_with_chars_not_in_charset);
-
-	// count_chars(str)
-	RUN_TEST(test_char_count_one_line_with_chars_in_ascii_charset);
-	RUN_TEST(test_char_count_one_line_with_chars_in_utf_charset);
-	RUN_TEST(test_char_count_one_line_with_chars_in_utf_charset_but_ascii_locale);
-	RUN_TEST(test_char_count_one_line_with_chars_in_ascii_charset_but_utf_locale);
-
- 	// get_stdin_content(void)
-	RUN_TEST(test_get_stdin_content_one_line);
-	RUN_TEST(test_get_stdin_content_huge_content);
-
-	return UNITY_END();
 }

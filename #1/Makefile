@@ -4,7 +4,9 @@ SRC_DIR = src
 TEST_DIR = test
 
 # Files
+MAIN_TEST = $(TEST_DIR)/spec.c
 TEST_SRC = $(TEST_DIR)/ccwc.spec.c
+PARSER_TEST_SRC = $(TEST_DIR)/parser.spec.c
 SRC = $(SRC_DIR)/ccwc.c
 PARSER_SRC = $(SRC_DIR)/parser.c
 UNITY_SRC = $(UNITY_DIR)/unity.c
@@ -20,8 +22,8 @@ TARGET_TEST = ccwc.test
 
 all: $(TARGET_TEST)
 
-$(TARGET_TEST): $(TEST_SRC) $(SRC) $(UNITY_SRC) $(PARSER_SRC)
-	gcc -fprofile-arcs -ftest-coverage $(CFLAGS_TEST) -o $(TARGET_TEST) $(UNITY_SRC) $(TEST_SRC) $(SRC) $(PARSER_SRC)
+$(TARGET_TEST): $(MAIN_TEST) $(TEST_SRC) $(PARSER_TEST_SRC) $(SRC) $(UNITY_SRC) $(PARSER_SRC)
+	gcc -fprofile-arcs -ftest-coverage $(CFLAGS_TEST) -o $(TARGET_TEST) $(UNITY_SRC) $(MAIN_TEST) $(TEST_SRC) $(PARSER_TEST_SRC) $(SRC) $(PARSER_SRC)
 
 $(TARGET_SRC): $(MAIN) $(SRC) $(PARSER_SRC)
 	gcc $(CFLAGS_SRC) -o $(TARGET_SRC) $(SRC) $(MAIN) $(PARSER_SRC)
