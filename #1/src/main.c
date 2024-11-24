@@ -3,6 +3,7 @@
 #include <locale.h>
 
 #include "parser.h"
+#include "constants.h"
 
 const char* argp_program_version = "ccwc 1.0.0";
 const char* argp_program_bug_address = "<maxou.info@gmail.com>";
@@ -10,10 +11,10 @@ static char doc[] = "A simplified clone of wc.";
 static char args_doc[] = "[FILENAME]";
 
 static struct argp_option options[] = {
-  {"bytes", 'c', 0, 0, "print the byte counts"},
-  {"lines", 'l', 0, 0, "print the newline counts"},
-  {"words", 'w', 0, 0, "print the word counts"},
-  {"chars", 'm', 0, 0, "print the character counts"},
+  {"bytes", BYTE_FLAG, 0, 0, "print the byte counts"},
+  {"lines", LINE_FLAG, 0, 0, "print the newline counts"},
+  {"words", WORD_FLAG, 0, 0, "print the word counts"},
+  {"chars", CHAR_FLAG, 0, 0, "print the character counts"},
   { 0 }
 };
 
