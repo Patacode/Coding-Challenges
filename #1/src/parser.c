@@ -46,6 +46,16 @@ error_t parse_opt(int key, char* arg, struct argp_state *state) {
   return 0;
 }
 
+void parse_args(const struct argp* argp, int argc, char** argv, Arguments* args) {
+  argp_parse(argp, argc, argv, 0, 0, args);
+
+  if(args -> flag_counter == 0) {
+    args -> count_flags[0] = 'l';
+    args -> count_flags[1] = 'w';
+    args -> count_flags[2] = 'c';
+  }
+}
+
 int process_args(const Arguments* args) {
   char* file_content;
   if(args -> is_from_stdin) {

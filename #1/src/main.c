@@ -25,20 +25,13 @@ static struct argp argp = { options, parse_opt, args_doc, doc };
 int main(int argc, char **argv) {
   setlocale(LC_CTYPE, "");
 
-  Arguments arguments = {
+  Arguments args = {
     .filename = NULL,
     .is_from_stdin = false,
     .flag_counter = 0,
     .count_flags = {'\0', '\0', '\0', '\0'}
   };
 
-  argp_parse(&argp, argc, argv, 0, 0, &arguments);
-
-  if(arguments.flag_counter == 0) {
-    arguments.count_flags[0] = 'l';
-    arguments.count_flags[1] = 'w';
-    arguments.count_flags[2] = 'c';
-  }
-
-  return process_args(&arguments);
+  parse_args(&argp, argc, argv, &args);
+  return process_args(&args);
 }
